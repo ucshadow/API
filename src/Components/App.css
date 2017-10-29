@@ -1,28 +1,28 @@
-.App {
-  text-align: center;
+html, body {
+  height: 100%;
+  background: #272727;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+._navigation {
+  width: 100%;
+  height: 4%;
+  background: #002800;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+._main {
+  margin-top: 50px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.select-match {
+  height: 70%;
+  background: gray;
+  color: whitesmoke;
 }
 
-.App-intro {
-  font-size: large;
+.team {
+  background: #230012;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.upcoming {
+  color: whitesmoke;
 }
