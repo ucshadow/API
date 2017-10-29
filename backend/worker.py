@@ -15,39 +15,63 @@ class Worker:
         self.steam = {'l': 'https://api.steampowered.com/IDOTA2Match_570/',
                       'r': '/v1/?key=3221B7028177669B2617814FECA4A67B'}
         self.update_meta = [
-            {'name': 'teams', 'url': 'https://api.opendota.com/api/teams', 'interval': 1}
+            {'name': 'teams', 'url': 'https://api.opendota.com/api/teams', 'interval': 1 * 60 * 24},
+            {'name': 'pro_players', 'url': 'https://api.opendota.com/api/proPlayers', 'interval': 1 * 60 * 24},
+            {'name': 'live_matches', 'url': 'https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames'
+                                            '/v1/?key=3221B7028177669B2617814FECA4A67B', 'interval': 1 * 60 * 10}
         ]
 
-        self.update_ticker()
+        Thread(target=self.update_ticker).start()
+        # self.update_ticker()
         print('worker started...')
 
     def check_cached(self, file_name, n):
         """
-        checks if the json data from the given file is more than "n" days old
+        checks if the json data from the given file is more than "n" minutes old
         the actual json file and the date file are different, but have the same name
         to speed up the reading of the date.
         :param file_name: the name of the file
         :param n: the number of days
         :return: True if the data is older than the given days, False in any other case
         """
-        with open('files/' + file_name + '.txt', 'r') as f:
-            f_ = f.readlines()
-            if len(f_) == 0:  # no data in the file
-                return False
-            return float(f_[0]) + (n * 86000) < time.time()
+        try:
+            with open('files/' + file_name + '.txt', 'r') as f:
+                f_ = f.readlines()
+                if len(f_) == 0:  # no data in the file
+                    return False
+                return float(f_[0]) + (n * 60) < time.time()
+        except FileNotFoundError:
+            with open('files/' + file_name + '.txt', 'w') as new_file:
+                new_file.write(str(time.time()))
+            with open('files/' + file_name + '.json', 'w') as new_json:
+                new_json.write('')
+            print('created new files for {}'.format(file_name))
+            return True
 
     def update_data_check(self):
+        """
+        for each data that will be cached, check if the data is up to date
+        :return:
+        """
         for meta in self.update_meta:
             if self.check_cached(meta['name'], meta['interval']):
                 print('updating {}'.format(meta['name']))
                 self.update_data(meta['url'], meta['name'])
 
     def update_data(self, url, file_name):
+        """
+        retrieves and writes the new json data from the corresponding API
+        also updates the date file with the date of the last update
+        :param url: the API url for the respective data
+        :param file_name: the file name where the data will be stored, also
+        the file name of the date file
+        :return:
+        """
         r = requests.get(url)
         with open('files/' + file_name + '.json', 'w') as f:
             json.dump(r.json(), f, indent=4)
             with open('files/' + file_name + '.txt', 'w') as f_:  # update date
-                f_.write(time.time())
+                f_.write(str(time.time()))
 
     def update_ticker(self):
         """
@@ -56,7 +80,7 @@ class Worker:
         """
         while True:
             Thread(target=self.update_data_check).start()
-            time.sleep(60 * 60 * 24)
+            time.sleep(60)
 
 
 # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 86000)))
