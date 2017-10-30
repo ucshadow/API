@@ -11,14 +11,11 @@ class Worker:
     """
 
     def __init__(self):
-        self.open = 'https://api.opendota.com/api/'
-        self.steam = {'l': 'https://api.steampowered.com/IDOTA2Match_570/',
-                      'r': '/v1/?key=3221B7028177669B2617814FECA4A67B'}
         self.update_meta = [
             {'name': 'teams', 'url': 'https://api.opendota.com/api/teams', 'interval': 1 * 60 * 24},
             {'name': 'pro_players', 'url': 'https://api.opendota.com/api/proPlayers', 'interval': 1 * 60 * 24},
             {'name': 'live_matches', 'url': 'https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames'
-                                            '/v1/?key=3221B7028177669B2617814FECA4A67B', 'interval': 1 * 60 * 10}
+                                            '/v1/?key=B', 'interval': 1 * 60 * 10}
         ]
 
         Thread(target=self.update_ticker).start()
