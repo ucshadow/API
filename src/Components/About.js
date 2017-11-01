@@ -15,14 +15,14 @@ class About extends Component {
   };
 
   getAllData = () => {
-    let url = 'https://api.opendota.com/api/teams/39/matches';
-    fetch(url)
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        this.setState({data: res});
-      });
+    //let url = 'https://api.opendota.com/api/teams/39/matches';
+    //fetch(url)
+    //  .then((res) => {
+    //    return res.json();
+    //  })
+    //  .then((res) => {
+    //    this.setState({data: res});
+    //  });
   };
 
   showData = () => {

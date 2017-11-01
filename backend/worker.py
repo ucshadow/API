@@ -14,8 +14,8 @@ class Worker:
         self.update_meta = [
             {'name': 'teams', 'url': 'https://api.opendota.com/api/teams', 'interval': 1 * 60 * 24},
             {'name': 'pro_players', 'url': 'https://api.opendota.com/api/proPlayers', 'interval': 1 * 60 * 24},
-            {'name': 'live_matches', 'url': 'https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames'
-                                            '/v1/?key=B', 'interval': 1 * 60 * 10}
+            # {'name': 'live_matches', 'url': 'https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames'
+            #                                 '/v1/?key=B', 'interval': 1 * 60 * 10}
         ]
 
         Thread(target=self.update_ticker).start()
@@ -77,7 +77,7 @@ class Worker:
         """
         while True:
             Thread(target=self.update_data_check).start()
-            time.sleep(60)
+            time.sleep(3600)
 
 
 # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + 86000)))

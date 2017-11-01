@@ -19,15 +19,17 @@ class Gosu:
         st = soup.find_all('td', class_='status')
 
         for i in range(5):
-            try:
-                left = root1[i]
-                right = root2[i]
-                # status = soup.find('td', class_='status')
-                status_ = st[i].find('span', class_='live-in')
-                row = {'left': left.get_text().strip(), 'right': right.get_text().strip(), 'status': status_.get_text()}
-                matches.append(row)
-            except:
-                continue
+            # try:
+            left = root1[i]
+            right = root2[i]
+            # status = soup.find('td', class_='status')
+            status_ = st[i].find('span', class_='live-in')
+            if status_ is None:
+                status_ = st[i].find('span', class_='live')
+            row = {'left': left.get_text().strip(), 'right': right.get_text().strip(), 'status': status_.get_text()}
+            matches.append(row)
+            # except:
+            #     continue
         return matches
 
     # def fetch2(self):
