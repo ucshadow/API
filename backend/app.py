@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from requests.compat import basestring
 from datetime import timedelta
 from flask import make_response, request, current_app
@@ -74,9 +74,17 @@ def get_player(name):
 
 
 def get_team(name):
+    if name == 'WG.Unity':
+        return get_team('WarriorsGaming.Unity')
     j = get_json('teams')
     for i in j:
         if i['name'].lower() == name.lower():
+            return jsonify(i)
+    for i in j:  # maybe it has a Team in the name
+        if i['name'].lower() == 'Team ' + name.lower():
+            return jsonify(i)
+    for i in j:  # finally search for TAG
+        if i['tag'].lower() == name.lower():
             return jsonify(i)
     return send_error('team', name)
 
@@ -96,11 +104,13 @@ def handle_multiple_params(p):
 
 
 @app.route('/API/teams/')
+@cross_domain(origin='*')
 def get_teams():
     return get_json('teams')
 
 
 @app.route('/API/pro_players/')
+@cross_domain(origin='*')
 def get_pro_players():
     return get_json('pro_players')
 
@@ -111,12 +121,19 @@ def get_matches():
     return jsonify(Gosu().fetch())
 
 
-@app.route('/API/')
+@app.route('/API/')  # /?query=team&name=Secret
+@cross_domain(origin='*')
 def res():
     if len(request.args) > 1:
         return handle_multiple_params(request.args)
     path = request.args.get('query')
     return send_error('query', path)
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def get_home(path):
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

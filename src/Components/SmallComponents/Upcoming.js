@@ -5,29 +5,14 @@ let u = 'http://localhost:5000';
 
 export default class Upcoming extends Component {
 
-  constructor() {
-    super();
-    this.state = {data: ['placeholder']}
+  constructor(props) {
+    super(props);
+
   }
 
-  componentDidMount = () => {
-    this.getLiveMatches();
-  };
-
-  getLiveMatches = () => {
-    fetch(u + '/API/matches/')
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        this.setState({data: res});
-      });
-  };
-
-
   show = () => {
-    console.log('hi from show');
-    return this.state.data.map((e) => {
+    // console.log('hi from show');
+    return this.props.data.map((e) => {
       return(
         <div key={Math.random()}>
           {e.left} vs {e.right} in {e.status}
@@ -37,6 +22,7 @@ export default class Upcoming extends Component {
   };
 
   render() {
+    // console.log(this.props.data);
     return (
       <div className="col-md-2 upcoming">
         MATCHES

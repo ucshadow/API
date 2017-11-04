@@ -6,14 +6,37 @@ import Team from './SmallComponents/Team';
 import Upcoming from './SmallComponents/Upcoming';
 
 class Home extends Component {
+
+  constructor() {
+    super();
+
+    this.u = 'http://localhost:5000';
+
+    this.state = {upcoming: [0]}
+  }
+
+  componentDidMount = () => {
+    this.getLiveMatches();
+  };
+
+  getLiveMatches = () => {
+    fetch(this.u + '/API/matches/')
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        this.setState({upcoming: res});
+      });
+  };
+
   render() {
     return (
       <div className="row">
-
           <div className="row col-md-10 select-match">
-            <Team />
+            <Team key={'left-side'} side={'left'} teams={this.state.upcoming[0]}/>
+            <Team key={'right-side'} side={'right'} teams={this.state.upcoming[0]}/>
           </div>
-        <Upcoming />
+        <Upcoming data={this.state.upcoming}/>
       </div>
     );
   }

@@ -20,9 +20,21 @@ html, body {
 }
 
 .team {
-  background: #230012;
+  background: #9f6047;
 }
 
 .upcoming {
   color: whitesmoke;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
 }

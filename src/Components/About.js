@@ -28,8 +28,8 @@ class About extends Component {
   showData = () => {
     return this.state.data.map((e) => {
       return(
-        <div>
-          {e.league_name}
+        <div style={{'font-size': '100px'}}>
+          ABOUT
         </div>
       )
     })
@@ -38,7 +38,9 @@ class About extends Component {
   render() {
     return (
       <div className="App">
-        {this.showData()}
+        <div style={{'font-size': '100px'}}>
+          ABOUT
+        </div>
       </div>
     );
   }
