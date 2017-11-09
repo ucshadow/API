@@ -21,6 +21,7 @@ export default class DrawHistory extends Component {
           d.radiantTeam = res.radiant_team;
           d.direTeam = res.dire_team;
           d.radiantWin = res.radiant_win;
+          d.match_id = res.match_id;
           this.graphData.push(d);
           // console.log(this.graphData);
           if (this.graphData.length >= this.props.data.length) {

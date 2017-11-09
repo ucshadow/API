@@ -1,15 +1,16 @@
 import json
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_file
 from requests.compat import basestring
 from datetime import timedelta
 from flask import make_response, request, current_app
 from functools import update_wrapper
 
 from helpers.gosu_scrapper import Gosu
+from helpers.team_name_special_rules import rules
 from worker import Worker
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 
 def cross_domain(origin=None, methods=None, headers=None,
@@ -74,18 +75,22 @@ def get_player(name):
 
 
 def get_team(name):
-    if name == 'WG.Unity':
-        return get_team('WarriorsGaming.Unity')
+    if name[-1] == '.':
+        name = name[0:-1]  # remove the dot at the end (some teams have them)
+    for rule in rules:
+        if rule['name'] == name:
+            return get_team(rule['value'])
     j = get_json('teams')
     for i in j:
-        if i['name'].lower() == name.lower():
+        if i['name'].lower() == name.lower() and i['tag'] != '':  # Unknown teams
             return jsonify(i)
     for i in j:  # maybe it has a Team in the name
         if i['name'].lower() == 'Team ' + name.lower():
             return jsonify(i)
     for i in j:  # finally search for TAG
         if i['tag'].lower() == name.lower():
-            return jsonify(i)
+            if i['wins'] != 'null':
+                return jsonify(i)
     return send_error('team', name)
 
 
@@ -118,7 +123,14 @@ def get_pro_players():
 @app.route('/API/matches/')
 @cross_domain(origin='*')
 def get_matches():
+    # return get_json('upcoming')
     return jsonify(Gosu().fetch())
+
+
+@app.route('/get_image')
+@cross_domain(origin='*')
+def get_image():
+    return send_file('test.png', mimetype='image/gif')
 
 
 @app.route('/API/')  # /?query=team&name=Secret

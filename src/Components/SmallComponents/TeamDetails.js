@@ -36,6 +36,7 @@ export default class TeamDetails extends Component {
   };
 
   showDetails = () => {
+    console.log('getting logo from' + this.state.details.logo_url);
     return (
       <div>
         <div>
