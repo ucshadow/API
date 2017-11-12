@@ -12,6 +12,7 @@ export default class DrawHistory extends Component {
 
   fetchMatchDetails = (id_) => {
     if (id_ !== 0) {
+      console.log('fetching match details for ' + id_);
       fetch(this.u + id_)
         .then((res) => {
           return res.json();
@@ -22,11 +23,12 @@ export default class DrawHistory extends Component {
           d.direTeam = res.dire_team;
           d.radiantWin = res.radiant_win;
           d.match_id = res.match_id;
+          d.startTime = res.start_time;
           this.graphData.push(d);
           // console.log(this.graphData);
           if (this.graphData.length >= this.props.data.length) {
-            console.log('new state');
-            console.log(this.state.g_d);
+            // console.log('new state');
+            // console.log(this.state.g_d);
             this.setState({g_d: this.graphData})
           }
         });
@@ -50,7 +52,7 @@ export default class DrawHistory extends Component {
     return (
       <div>
         {this.results()}
-        <HistoryDiagram key={Math.random()} d_={this.state.g_d} teamName={this.props.teamName}/>
+        <HistoryDiagram key={Math.random()} d_={this.state.g_d} id_={this.props.id_} teamName={this.props.teamName}/>
       </div>
     )
   }

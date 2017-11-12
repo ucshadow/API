@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
 import TeamHistory from './TeamHistory';
+import TeamPlayers from './TeamPlayers';
+import {path} from "./Path";
 
 export default class TeamDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.u = 'http://localhost:5000';
+    this.u = path;
+
+    this.width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
 
     this.state = {
       details: {
@@ -35,29 +41,27 @@ export default class TeamDetails extends Component {
       });
   };
 
+  handleLogoLoad = () => {
+    if(!this.state.details.logo_url) {
+      return 'https://i.imgur.com/5gO7P9B.png';
+    }
+    return this.state.details.logo_url;
+  };
+
   showDetails = () => {
-    console.log('getting logo from' + this.state.details.logo_url);
+    // console.log('getting logo from' + this.state.details.logo_url);
     return (
-      <div>
-        <div>
-          Name: {this.state.details.name}
-        </div>
-        <div>
-          Wins: {this.state.details.wins}
-        </div>
-        <div>
-          Losses: {this.state.details.losses}
-        </div>
-        <div>
-          Rating: {this.state.details.rating}
-        </div>
-        <div>
-          ID: {this.state.details.team_id}
-        </div>
-        {this.state.details.logo_url ? <img src={this.state.details.logo_url} /> : null}
+      <div className='row team-details'>
+        {this.state.details.logo_url ?
+          <img src={this.handleLogoLoad()} className='col-md-4 team-logo-big' /> : null}
+        <TeamPlayers teamId={this.state.details.team_id} />
       </div>
     )
   };
+
+  // showDetails = () => {
+  //   return <TeamDetails teamId={this.state.details.team_id}/>
+  // };
 
 
   render() {

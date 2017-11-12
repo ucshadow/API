@@ -4,13 +4,14 @@ import './App.css';
 
 import Team from './SmallComponents/Team';
 import Upcoming from './SmallComponents/Upcoming';
+import {path} from "./SmallComponents/Path";
 
 class Home extends Component {
 
   constructor() {
     super();
 
-    this.u = 'http://localhost:5000';
+    this.u = path;
 
     this.state = {upcoming: [0]}
   }

@@ -1,29 +1,60 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
+import {path} from "./Path";
 
 export default class HistoryDiagram extends Component {
 
   constructor() {
     super();
-    this.state = {svg: null}
+
+    this.u = path;
+
+    this.state = {svg: null};
+    this.width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+    this.w = this.width / 3;
   }
 
   componentDidMount = () => {
-    this.setState({svg: d3.select('#' + this.props.teamName)});
+    this.setState({svg: d3.select('#' + this.props.id_)});
+    this.solveNullLogos(this.props.d_);
+  };
 
+  solveNullLogos = (d) => {
+    //toDO: may NOT work, async call, check later!
+    d.forEach((e) => {
+      if(!e.direTeam.logo_url) {
+        e.direTeam.logo_url = this.getLogo(e.direTeam.name)
+      }
+      if(!e.radiantTeam.logo_url) {
+        e.radiantTeam.logo_url = this.getLogo(e.radiantTeam.name)
+      }
+    })
+  };
+
+  getLogo = (teamName) => {
+    fetch(this.u + '/API/?query=logo&name=' + teamName)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        // this.setState({upcoming: res});
+        return res.logo
+      });
   };
 
   drawExample = () => {
 
-    if (this.state.svg) {
+    if (this.state.svg && this.props.teamName) {
       let data = this.prepareData(this.props.d_);
 
-      console.log('prepared data');
-      console.log(data);
+      // console.log('prepared data');
+      // console.log(data);
 
       let margin = {top: 40, right: 40, bottom: 60, left: 80},
-        width = 960 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom,
+        width = this.w - margin.left - margin.right,
+        height = this.w / 3 - margin.top - margin.bottom,
         div = d3.select('body').append('div')
           .attr('class', 'tooltip')
           .style('opacity', 0);
@@ -60,7 +91,7 @@ export default class HistoryDiagram extends Component {
       data.forEach((d, i) => {
         this.state.svg.append('defs')
           .append('pattern')
-          .attr('id', 'bg' + i) // + this.props.d_.match_id)
+          .attr('id', 'bg' + d.matchId + this.props.id_) // + this.props.d_.match_id)
           .attr('width', 40)
           .attr('height', 40)
           .append('image')
@@ -95,7 +126,7 @@ export default class HistoryDiagram extends Component {
           return d.color
         })
         .attr('fill', (d, i) => {
-          return 'url(#bg' + i + ')'
+          return 'url(#bg' + d.matchId + this.props.id_ + ')'
         })
         .attr('x', (d) => {
           return x(d.opponent) - 20
@@ -126,75 +157,31 @@ export default class HistoryDiagram extends Component {
         .attr('class', 'line')
         .style('stroke', 'white')
         .attr('d', line);
-
-      // console.log('-------------------------');
-      // console.log(data);
-
-      // let margin = {top: 20, right: 20, bottom: 30, left: 40},
-      //   width = +960 - margin.left - margin.right,
-      //   height = +500 - margin.top - margin.bottom;
-      //
-      // let x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-      //   y = d3.scaleLinear().rangeRound([height, 0]);
-      //
-      // let g = this.state.svg.append("g")
-      //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      //
-      //
-      // x.domain(data.map(function (d) {
-      //   return d.opponent;
-      // }));
-      // y.domain([0, d3.max(data, function (d) {
-      //   return d.won ? 1 : 0;
-      // })]);
-      //
-      // g.append("g")
-      //   .attr("class", "axis axis--x")
-      //   .attr("transform", "translate(0," + height + ")")
-      //   .call(d3.axisBottom(x));
-      //
-      // g.append("g")
-      //   .attr("class", "axis axis--y")
-      //   .call(d3.axisLeft(y).ticks(10, "%"))
-      //   .append("text")
-      //   .attr("transform", "rotate(-90)")
-      //   .attr("y", 6)
-      //   .attr("dy", "0.71em")
-      //   .attr("text-anchor", "end")
-      //   .text("Frequency");
-      //
-      // g.selectAll(".bar")
-      //   .data(data)
-      //   .enter().append("rect")
-      //   .attr("class", "bar")
-      //   .attr("x", function (d) {
-      //     return x(d.opponent);
-      //   })
-      //   .attr("y", function (d) {
-      //     return y(d.won ? 1 : 0);
-      //   })
-      //   .attr("width", x.bandwidth())
-      //   .attr("height", function (d) {
-      //     return height - y(d.won ? 1 : 0);
-      //   });
     }
 
   };
 
   prepareData = (p) => {
     console.log('------------------p---------------------');
+    console.log(this.props.teamName);
     console.log(p);
     let data = [];
     let score = 0;
     let opponent = 1;
     let color = 'blue';
 
-    p.forEach((e) => {
+
+
+    p.sort((a, b) => {
+      return a.startTime > b.startTime;
+    });
+
+    p.map((e) => {
       let obj = {};
       if (e.radiantTeam && e.radiantTeam.name === this.props.teamName) {
-        if(e.radiantWin) {
-           score++;
-           color = 'green';
+        if (e.radiantWin) {
+          score++;
+          color = 'green';
         } else {
           score--;
           color = 'red';
@@ -202,9 +189,9 @@ export default class HistoryDiagram extends Component {
         obj.name = e.direTeam ? e.direTeam.name : 'unknown';
         obj.logo_url = e.direTeam ? e.direTeam.logo_url : 'placeholder';
       } else {
-        if(e.radiantWin) {
-           score--;
-           color = 'red';
+        if (e.radiantWin) {
+          score--;
+          color = 'red';
         } else {
           score++;
           color = 'green';
@@ -217,6 +204,7 @@ export default class HistoryDiagram extends Component {
       obj.color = color;
       // obj.name = e.name;
       obj.matchId = e.match_id;
+      obj.startTime = e.startTime;
       data.push(obj);
       opponent++;
     });
@@ -226,7 +214,7 @@ export default class HistoryDiagram extends Component {
   render() {
     return (
       <div>
-        <svg id={this.props.teamName} width="960" height="500">_</svg>
+        <svg id={this.props.id_} width={this.w} height={this.w / 3}>_</svg>
         {this.drawExample()}
       </div>
     )

@@ -83,3 +83,8 @@ div.tooltip {
     border-radius: 8px;
     pointer-events: none;
 }
+
+.player-avatar {
+  height: 128px;
+  width: 128px;
+}

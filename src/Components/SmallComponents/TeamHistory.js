@@ -37,9 +37,11 @@ export default class TeamHistory extends Component {
       }]}/>
     }
     if (this.state.history.length < 10) {
-      return <DrawHistory key={Math.random()} data={this.state.history} teamName={this.props.teamName}/>
+      return <DrawHistory key={Math.random()} data={this.state.history} id_={'t' + this.props.id_}
+                          teamName={this.props.teamName}/>
     }
-    return <DrawHistory key={Math.random()} data={this.state.history.slice(0, 10)} teamName={this.props.teamName}/>
+    return <DrawHistory key={Math.random()} data={this.state.history.slice(0, 10)} id_={'t' + this.props.id_}
+                        teamName={this.props.teamName}/>
   };
 
   fetchDetails = () => {
@@ -50,7 +52,6 @@ export default class TeamHistory extends Component {
 
 
   render() {
-    console.log(this.props.id_);
     return (
       <div>
         {this.fetchDetails()}
