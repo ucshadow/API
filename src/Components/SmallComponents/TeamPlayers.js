@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import SinglePlayer from './SinglePlayer';
+import Provider from "../Provider";
 
 export default class TeamPlayers extends Component {
 
@@ -11,14 +12,15 @@ export default class TeamPlayers extends Component {
 
   fetchTeamPlayers = () => {
     if (this.props.teamId > 0) {
-      // console.log('fetching ' + 'https://api.opendota.com/api/teams/' + this.props.teamId + ' /players');
-      fetch('https://api.opendota.com/api/teams/' + this.props.teamId + ' /players')
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({details: res});
-        });
+      // // console.log('fetching ' + 'https://api.opendota.com/api/teams/' + this.props.teamId + ' /players');
+      // fetch('https://api.opendota.com/api/teams/' + this.props.teamId + ' /players')
+      //   .then((res) => {
+      //     return res.json();
+      //   })
+      //   .then((res) => {
+      //     this.setState({details: res});
+      //   });
+      Provider.fetchUrl('https://api.opendota.com/api/teams/' + this.props.teamId + ' /players', this)
     }
   };
 

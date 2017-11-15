@@ -9,7 +9,7 @@ export default class HistoryDiagram extends Component {
 
     this.u = path;
 
-    this.state = {svg: null};
+    this.state = {svg: null, logo: 0};
     this.width = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
@@ -22,7 +22,6 @@ export default class HistoryDiagram extends Component {
   };
 
   solveNullLogos = (d) => {
-    //toDO: may NOT work, async call, check later!
     d.forEach((e) => {
       if(!e.direTeam.logo_url) {
         e.direTeam.logo_url = this.getLogo(e.direTeam.name)
@@ -33,13 +32,14 @@ export default class HistoryDiagram extends Component {
     })
   };
 
+  //toDO: maybe just return placeholder, eh...
   getLogo = (teamName) => {
     fetch(this.u + '/API/?query=logo&name=' + teamName)
       .then((res) => {
         return res.json();
       })
       .then((res) => {
-        // this.setState({upcoming: res});
+        this.setState({logo: Math.random()});
         return res.logo
       });
   };

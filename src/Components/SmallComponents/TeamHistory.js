@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DrawHistory from './DrawHistory';
+import Provider from "../Provider";
 
 export default class TeamHistory extends Component {
 
@@ -7,24 +8,25 @@ export default class TeamHistory extends Component {
     super(props);
     this.u = 'https://api.opendota.com/api/teams/';
 
-    this.state = {history: []};
+    this.state = {details: []};
 
   }
 
   fetchTeamDetails = () => {
-    if (this.state.history.length === 0) {
-      fetch(this.u + this.props.id_ + '/matches')
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({history: res});
-        });
+    if (this.state.details.length === 0) {
+      // fetch(this.u + this.props.id_ + '/matches')
+      //   .then((res) => {
+      //     return res.json();
+      //   })
+      //   .then((res) => {
+      //     this.setState({details: res});
+      //   });
+      Provider.fetchUrl(this.u + this.props.id_ + '/matches', this)
     }
   };
 
   showDetails = () => {
-    if (this.state.history.length === 0) {
+    if (this.state.details.length === 0) {
       return <DrawHistory key={Math.random()} data={[{
         match_id: 0,
         radiant_win: false,
@@ -36,11 +38,11 @@ export default class TeamHistory extends Component {
         cluster: 0
       }]}/>
     }
-    if (this.state.history.length < 10) {
-      return <DrawHistory key={Math.random()} data={this.state.history} id_={'t' + this.props.id_}
+    if (this.state.details.length < 10) {
+      return <DrawHistory key={Math.random()} data={this.state.details} id_={'t' + this.props.id_}
                           teamName={this.props.teamName}/>
     }
-    return <DrawHistory key={Math.random()} data={this.state.history.slice(0, 10)} id_={'t' + this.props.id_}
+    return <DrawHistory key={Math.random()} data={this.state.details.slice(0, 10)} id_={'t' + this.props.id_}
                         teamName={this.props.teamName}/>
   };
 

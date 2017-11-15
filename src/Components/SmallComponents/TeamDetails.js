@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import TeamHistory from './TeamHistory';
 import TeamPlayers from './TeamPlayers';
 import {path} from "./Path";
+import Provider from "../Provider";
 
 export default class TeamDetails extends Component {
 
@@ -32,13 +33,14 @@ export default class TeamDetails extends Component {
   };
 
   fetchTeamDetails = () => {
-    fetch(this.u + '/API/?query=team&name=' + this.props.team)
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        this.setState({details: res});
-      });
+    // fetch(this.u + '/API/?query=team&name=' + this.props.team)
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((res) => {
+    //     this.setState({details: res});
+    //   });
+    Provider.fetchUrl(this.u + '/API/?query=team&name=' + this.props.team, this)
   };
 
   handleLogoLoad = () => {

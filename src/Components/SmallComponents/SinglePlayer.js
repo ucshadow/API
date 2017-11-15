@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Provider from "../Provider";
 
 export default class SinglePlayer extends Component {
 
@@ -10,13 +11,14 @@ export default class SinglePlayer extends Component {
   fetchPlayerDetails = () => {
     setTimeout(() => {
       console.log('fetching ' + 'https://api.opendota.com/api/players/' + this.props.playerId);
-      fetch('https://api.opendota.com/api/players/' + this.props.playerId)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({details: res});
-        });
+      // fetch('https://api.opendota.com/api/players/' + this.props.playerId)
+      //   .then((res) => {
+      //     return res.json();
+      //   })
+      //   .then((res) => {
+      //     this.setState({details: res});
+      //   });
+      Provider.fetchUrl('https://api.opendota.com/api/players/' + this.props.playerId, this)
     }, this.props.timeout)
   };
 
