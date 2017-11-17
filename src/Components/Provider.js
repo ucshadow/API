@@ -1,5 +1,10 @@
 const storage = [];
 
+/**
+ * Downloader class. Also has a local storage for caching.
+ * Used when navigating the incoming matches, in the sense that it only fetches
+ * data for one match once, then stores it locally for future use.
+ */
 class Provider {
 
   static download(url, component) {
@@ -28,9 +33,10 @@ class Provider {
     if (u) {
       console.log('object already cached.');
       component.setState({details: u.data});
+    } else {
+      this.download(url, component);
     }
-    console.log('fetching object ' + u);
-    this.download(url, component);
+
   }
 
   static contains_(url) {
@@ -51,7 +57,6 @@ class Provider {
       console.log('object already cached.');
       this.prepareGraphData(u.data, component, graphData, props)
     }
-    console.log('fetching object ' + u);
     this.downloadGraphData(url, component, graphData, props);
   }
 

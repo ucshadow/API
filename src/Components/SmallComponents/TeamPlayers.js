@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import SinglePlayer from './SinglePlayer';
 import Provider from "../Provider";
 
+/**
+ * Parent Component containing player pictures Components
+ */
 export default class TeamPlayers extends Component {
 
   constructor(props) {
@@ -12,18 +15,15 @@ export default class TeamPlayers extends Component {
 
   fetchTeamPlayers = () => {
     if (this.props.teamId > 0) {
-      // // console.log('fetching ' + 'https://api.opendota.com/api/teams/' + this.props.teamId + ' /players');
-      // fetch('https://api.opendota.com/api/teams/' + this.props.teamId + ' /players')
-      //   .then((res) => {
-      //     return res.json();
-      //   })
-      //   .then((res) => {
-      //     this.setState({details: res});
-      //   });
       Provider.fetchUrl('https://api.opendota.com/api/teams/' + this.props.teamId + ' /players', this)
     }
   };
 
+  /**
+   * For each player that is currently active in the team
+   * a new Component is created to display data about that player
+   * @returns A new Component for each player
+   */
   showPlayers = () => {
     if (this.state.details.length > 0) {
       let local = this.state.details;
@@ -43,7 +43,8 @@ export default class TeamPlayers extends Component {
   };
 
   render = () => {
-    console.log(this.state.details);
+    // should only fetch if it has a team id and it hasn't fetched before
+    // to avoid recursion since it's called in the render() method
     if (this.props.teamId && this.state.details.length === 0) {
       this.fetchTeamPlayers()
     }

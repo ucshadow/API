@@ -2,11 +2,15 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import {path} from "./Path";
 
+/**
+ * Component responsible with drawing the history diagram.
+ * On init it calculates the width of the device screen since
+ * the dimensions of the svg are in pixels
+ */
 export default class HistoryDiagram extends Component {
 
   constructor() {
     super();
-
     this.u = path;
 
     this.state = {svg: null, logo: 0};
@@ -16,10 +20,17 @@ export default class HistoryDiagram extends Component {
     this.w = this.width / 3;
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.setState({svg: d3.select('#' + this.props.id_)});
-    this.solveNullLogos(this.props.d_);
+    // this.solveNullLogos(this.props.d_);
   };
+
+  componentWillReceiveProps(nextP) {
+    console.log(nextP);
+    if(this.state.svg) {
+      this.state.svg.selectAll("*").remove();
+    }
+  }
 
   solveNullLogos = (d) => {
     d.forEach((e) => {
@@ -33,6 +44,11 @@ export default class HistoryDiagram extends Component {
   };
 
   //toDO: maybe just return placeholder, eh...
+
+  /**
+   * fetches the team logo from the server side
+   * @param teamName the name of the team that has no logo (in the OpenDota API)
+   */
   getLogo = (teamName) => {
     fetch(this.u + '/API/?query=logo&name=' + teamName)
       .then((res) => {
@@ -44,13 +60,14 @@ export default class HistoryDiagram extends Component {
       });
   };
 
+  /**
+   * D3 diagram representing the team match history.
+   * A maximum of 10 matches are displayed (last 10 matches). This can be changed in the parent
+   * Component without the need of changing this code.
+   */
   drawExample = () => {
-
     if (this.state.svg && this.props.teamName) {
       let data = this.prepareData(this.props.d_);
-
-      // console.log('prepared data');
-      // console.log(data);
 
       let margin = {top: 40, right: 40, bottom: 60, left: 80},
         width = this.w - margin.left - margin.right,
@@ -58,10 +75,6 @@ export default class HistoryDiagram extends Component {
         div = d3.select('body').append('div')
           .attr('class', 'tooltip')
           .style('opacity', 0);
-
-
-      // let x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-      //   y = d3.scaleLinear().rangeRound([height, 0]);
 
       let x = d3.scaleLinear()
         .rangeRound([0, width]);
@@ -91,12 +104,11 @@ export default class HistoryDiagram extends Component {
       data.forEach((d, i) => {
         this.state.svg.append('defs')
           .append('pattern')
-          .attr('id', 'bg' + d.matchId + this.props.id_) // + this.props.d_.match_id)
+          .attr('id', 'bg' + d.matchId + this.props.id_)
           .attr('width', 40)
           .attr('height', 40)
           .append('image')
           .attr('xlink:href', d.logo_url)
-          // .attr('xlink:href', '/static/media/test.png')
           .attr('width', 40)
           .attr('height', 40);
       });
@@ -106,8 +118,6 @@ export default class HistoryDiagram extends Component {
       g.append('g')
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0,' + height + ')');
-      // .call(d3.axisBottom(x));
-
       let item = g.selectAll('.item')
         .data(data)
         .enter().append('g')
@@ -161,10 +171,16 @@ export default class HistoryDiagram extends Component {
 
   };
 
+  /**
+   * Prepares the data to make it D3 friendly.
+   * It also sorts the matches based on the time they were played.
+   * @param p
+   * @returns {Array}
+   */
   prepareData = (p) => {
-    console.log('------------------p---------------------');
-    console.log(this.props.teamName);
-    console.log(p);
+    // console.log('------------------p---------------------');
+    // console.log(this.props.teamName);
+    // console.log(p);
     let data = [];
     let score = 0;
     let opponent = 1;

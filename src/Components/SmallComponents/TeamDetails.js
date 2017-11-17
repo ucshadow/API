@@ -4,6 +4,10 @@ import TeamPlayers from './TeamPlayers';
 import {path} from "./Path";
 import Provider from "../Provider";
 
+/**
+ * Component responsible with fetching a team details.
+ * It has a default details object so it loads even if the fetch fails
+ */
 export default class TeamDetails extends Component {
 
   constructor(props) {
@@ -28,21 +32,20 @@ export default class TeamDetails extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount(){
     this.fetchTeamDetails();
   };
 
   fetchTeamDetails = () => {
-    // fetch(this.u + '/API/?query=team&name=' + this.props.team)
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((res) => {
-    //     this.setState({details: res});
-    //   });
     Provider.fetchUrl(this.u + '/API/?query=team&name=' + this.props.team, this)
   };
 
+  /**
+   * Displays the team logo. Should display a placeholder if no team logo
+   *
+   * @returns {*}
+   */
+    //toDO: is the placeholder working?
   handleLogoLoad = () => {
     if(!this.state.details.logo_url) {
       return 'https://i.imgur.com/5gO7P9B.png';
@@ -51,7 +54,6 @@ export default class TeamDetails extends Component {
   };
 
   showDetails = () => {
-    // console.log('getting logo from' + this.state.details.logo_url);
     return (
       <div className='row team-details'>
         {this.state.details.logo_url ?
@@ -60,10 +62,6 @@ export default class TeamDetails extends Component {
       </div>
     )
   };
-
-  // showDetails = () => {
-  //   return <TeamDetails teamId={this.state.details.team_id}/>
-  // };
 
 
   render() {

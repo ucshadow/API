@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-let u = 'http://localhost:5000';
-
+import SingleUpcomingMatch from './SingleUpcomingMatch';
 
 export default class Upcoming extends Component {
 
@@ -12,11 +10,13 @@ export default class Upcoming extends Component {
 
   show = () => {
     // console.log('hi from show');
-    return this.props.data.map((e) => {
+    return this.props.data.map((e, i) => {
       return(
-        <div key={Math.random()}>
-          {e.left} vs {e.right} in {e.status}
-        </div>
+        <SingleUpcomingMatch key={Math.random()}
+                             data={e}
+                             changeActive={this.props.changeActive}
+                             index={i}
+        />
       )
     })
   };
@@ -24,8 +24,10 @@ export default class Upcoming extends Component {
   render() {
     // console.log(this.props.data);
     return (
-      <div className="col-md-2 upcoming">
-        MATCHES
+      <div className='col-md-2 upcoming row'>
+        <div className='col-md-12 upcoming_matches_title'>
+          Upcoming matches
+        </div>
         <br />
         {this.show()}
       </div>

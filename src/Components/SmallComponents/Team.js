@@ -2,23 +2,10 @@ import React, {Component} from 'react';
 import TeamDetails from './TeamDetails';
 
 
+/**
+ * Team main panel, one for each team
+ */
 export default class Team extends Component {
-
-  constructor(props) {
-    super(props);
-
-    // this.state = {team: this.props.teams[this.props.side]};
-
-
-  }
-
-  showTeamDetails = () => {
-    return (
-      <div>
-        {this.state.team ? this.state.team.name : null}
-      </div>
-    )
-  };
 
   checkForTeam = () => {
     if (this.props.teams === 0) {

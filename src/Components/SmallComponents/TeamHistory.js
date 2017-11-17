@@ -2,25 +2,20 @@ import React, {Component} from 'react';
 import DrawHistory from './DrawHistory';
 import Provider from "../Provider";
 
+/**
+ * Component responsible with fetching of a team match history
+ * The match history is used to draw a graph.
+ */
 export default class TeamHistory extends Component {
 
   constructor(props) {
     super(props);
     this.u = 'https://api.opendota.com/api/teams/';
-
     this.state = {details: []};
-
   }
 
   fetchTeamDetails = () => {
     if (this.state.details.length === 0) {
-      // fetch(this.u + this.props.id_ + '/matches')
-      //   .then((res) => {
-      //     return res.json();
-      //   })
-      //   .then((res) => {
-      //     this.setState({details: res});
-      //   });
       Provider.fetchUrl(this.u + this.props.id_ + '/matches', this)
     }
   };
