@@ -39,10 +39,13 @@ export default class DrawHistory extends Component {
     }
   };
 
+  componentWillMount() {
+    this.results();
+  }
+
   render() {
     return (
       <div>
-        {this.results()}
         <HistoryDiagram key={Math.random()} d_={this.state.g_d} id_={this.props.id_} teamName={this.props.teamName}/>
       </div>
     )

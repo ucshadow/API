@@ -52,10 +52,10 @@ export default class UpcomingTeamRight extends Component {
 
 
   render() {
-    if(!this.state.details.logo_url) {
-      this.getLogo(this.props.data);
-      console.log('updating')
-    }
+    // if(!this.state.details.logo_url) {
+    //   this.getLogo(this.props.data);
+    //   console.log('updating')
+    // }
     return (
       <div className='col-md-3 upcoming_match_entry'>
         <img src={this.state.details.logo_url}

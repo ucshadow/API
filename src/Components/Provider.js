@@ -24,6 +24,7 @@ class Provider {
         return res.json();
       })
       .then((res) => {
+        storage.push({url: url, data: res});
         this.prepareGraphData(res, component, graphData, props)
       });
   };
@@ -32,8 +33,10 @@ class Provider {
     let u = this.contains_(url);
     if (u) {
       console.log('object already cached.');
+      console.log(u.data);
       component.setState({details: u.data});
     } else {
+      console.log('Provider is getting ' + url);
       this.download(url, component);
     }
 
@@ -41,10 +44,11 @@ class Provider {
 
   static contains_(url) {
     if (storage.length === 0) {
+      console.log('Provider storage is empty');
       return false;
     }
     for (let i = 0; i < storage.length; i++) {
-      if (storage[i].url === url.url) {
+      if (storage[i].url === url) {
         return storage[i]
       }
     }
@@ -54,10 +58,13 @@ class Provider {
   static fetchGraphData(url, component, graphData, props) {
     let u = this.contains_(url);
     if (u) {
-      console.log('object already cached.');
+      console.log('graph data object already cached.');
       this.prepareGraphData(u.data, component, graphData, props)
+    } else {
+      console.log('Provider is getting new graph data: ' + url);
+      this.downloadGraphData(url, component, graphData, props);
     }
-    this.downloadGraphData(url, component, graphData, props);
+
   }
 
   static prepareGraphData(res, component, graphData, props) {

@@ -18,7 +18,7 @@ export default class UpcomingMatchStatus extends Component {
         </div>
         <div className='col-md-8 upcoming_match_entry'>
           {this.props.data}
-          <button onClick={this.changeTeam}> Show </button>
+          <button onClick={this.changeTeam} id={'button-' + this.props.index}> Show </button>
         </div>
       </div>
     )

@@ -45,7 +45,7 @@ export default class TeamDetails extends Component {
    *
    * @returns {*}
    */
-    //toDO: is the placeholder working?
+    //toDO: MOVED TO THE BACKEND
   handleLogoLoad = () => {
     if(!this.state.details.logo_url) {
       return 'https://i.imgur.com/5gO7P9B.png';

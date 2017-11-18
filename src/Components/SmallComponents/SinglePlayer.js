@@ -20,7 +20,6 @@ export default class SinglePlayer extends Component {
    */
   fetchPlayerDetails = () => {
     setTimeout(() => {
-      console.log('fetching ' + 'https://api.opendota.com/api/players/' + this.props.playerId);
       Provider.fetchUrl('https://api.opendota.com/api/players/' + this.props.playerId, this)
     }, this.props.timeout)
   };

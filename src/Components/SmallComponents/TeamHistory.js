@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import DrawHistory from './DrawHistory';
 import Provider from "../Provider";
+import {path} from "./Path";
 
 /**
  * Component responsible with fetching of a team match history
@@ -10,13 +11,13 @@ export default class TeamHistory extends Component {
 
   constructor(props) {
     super(props);
-    this.u = 'https://api.opendota.com/api/teams/';
+    this.u = path;
     this.state = {details: []};
   }
 
   fetchTeamDetails = () => {
     if (this.state.details.length === 0) {
-      Provider.fetchUrl(this.u + this.props.id_ + '/matches', this)
+      Provider.fetchUrl(this.u + '/API/?query=upcoming&team_id=' + this.props.id_, this)
     }
   };
 
@@ -47,11 +48,14 @@ export default class TeamHistory extends Component {
     }
   };
 
+  componentWillMount() {
+    this.fetchDetails();
+  }
+
 
   render() {
     return (
       <div>
-        {this.fetchDetails()}
         {this.showDetails()}
       </div>
     )

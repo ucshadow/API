@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-
-import Team from './SmallComponents/Team';
 import Upcoming from './SmallComponents/Upcoming';
-import {path} from "./SmallComponents/Path";
-import Provider from "./Provider";
+import TeamContainer from "./SmallComponents/TeamContainer";
 
 /**
  * mai Component responsible with retrieving the
@@ -15,30 +12,23 @@ class Home extends Component {
 
   constructor() {
     super();
-    this.u = path;
-    this.state = {details: [0], active: 0}
+    this.state = {activeFunction: undefined}
   }
 
-  componentDidMount = () => {
-    this.getLiveMatches();
-  };
+  shouldComponentUpdate() {
+    return !this.state.activeFunction;
+  }
 
-  getLiveMatches = () => {
-    Provider.fetchUrl(this.u + '/API/matches/', this)
-  };
-
-  changeActive = (active) => {
-    this.setState({active: active})
+  // holly mother of all workarounds!
+  addActiveFunction = (f) => {
+    this.setState({activeFunction: f})
   };
 
   render() {
     return (
-      <div className="row">
-          <div className="row col-md-10 select-match">
-            <Team key={'left-side'} side={'left'} teams={this.state.details[this.state.active]}/>
-            <Team key={'right-side'} side={'right'} teams={this.state.details[this.state.active]}/>
-          </div>
-        <Upcoming data={this.state.details} changeActive={this.changeActive}/>
+      <div className="row team_container">
+        <Upcoming act={this.state.activeFunction}/>
+        <TeamContainer act={this.addActiveFunction} />
       </div>
     );
   }
