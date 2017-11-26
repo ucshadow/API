@@ -24,7 +24,7 @@ class Worker:
         self.last_matches_between = []
         self.hero_stats = []
         self.team_last_matches_without_details = []
-        self.key = '3221B7028177669B2617814FECA4A67B'  # toDO:dont push this!
+        self.key = '1234'  # toDO:dont push this!
 
         self.loop()
 
