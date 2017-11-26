@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {path} from "../../SmallComponents/Path";
-import UpcomingMatch from "../../SmallComponents/UpcomingMatch";
+import {path} from "../SmallComponents/Path";
+import UpcomingMatch from "../SmallComponents/UpcomingMatch";
 
 export default class Upcoming extends Component {
 

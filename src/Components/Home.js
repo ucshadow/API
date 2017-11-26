@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 import SelectedMatch from "./MediumComponents/SelectedMatch";
 import Upcoming from "./MediumComponents/Upcoming";
+import CacheFunctions from "./Helpers/CacheFunctions";
+import {path} from "./SmallComponents/Path";
+import {heroCache} from "./Helpers/HeroCache";
 
 /**
  * mai Component responsible with retrieving the
@@ -19,7 +22,8 @@ class Home extends Component {
       || document.documentElement.clientHeight
       || document.body.clientHeight;
 
-    this.state={activeFunction: undefined}
+    this.state={activeFunction: undefined};
+    this.u = path;
   }
 
   shouldComponentUpdate() {
@@ -29,6 +33,24 @@ class Home extends Component {
   // holly mother of all workarounds!
   addActiveFunction = (f) => {
     this.setState({activeFunction: f})
+  };
+
+  componentDidMount() {  // cache hero data
+    this.getData();
+  }
+
+  getData = () => {
+    if (!CacheFunctions.areHeroesCached()) {
+      fetch(this.u + '/API/?query=hero_stats&id=1')
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          heroCache.push(res);
+
+        });
+    }
+
   };
 
   render() {

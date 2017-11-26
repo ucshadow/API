@@ -22,6 +22,9 @@ class Worker:
         self.most_played_hero = []
         self.mmr_per_player = []
         self.last_matches_between = []
+        self.hero_stats = []
+        self.team_last_matches_without_details = []
+        self.key = '3221B7028177669B2617814FECA4A67B'  # toDO:dont push this!
 
         self.loop()
 
@@ -42,9 +45,9 @@ class Worker:
     def populate_team_last_matches(self):
         print('\n--- last matches for each team --- \n')
         for i, team in enumerate(self.team_info):
-            print('{} matches remaining...'.format(len(self.team_info) - i))
+            print('{} matches that need details remaining...'.format(len(self.team_info) - i))
             self.update_last_matches(team['team_id'])
-            time.sleep(0.3)
+            time.sleep(0.5)
         Thread(target=self.populate_active_players).start()
         self.update_last_matches_between()
 
@@ -53,7 +56,7 @@ class Worker:
         for i, team in enumerate(self.team_info):
             print('{}                                     teams remaining...'.format(len(self.team_info) - i))
             self.update_active_players(team['team_id'])
-            time.sleep(0.3)
+            time.sleep(0.5)
         Thread(target=self.populate_most_played_heroes).start()
 
     def populate_most_played_heroes(self):
@@ -63,7 +66,13 @@ class Worker:
             for j, player in enumerate(team['active']):
                 print('{} players remaining...'.format(len(team['active']) - j))
                 self.update_most_played_hero(player['account_id'])
-                time.sleep(0.3)
+                time.sleep(0.5)
+        self.populate_hero_stats()
+
+    def populate_hero_stats(self):
+        print('\n---  populating hero statistics --- \n')
+        to_json = request_handler('https://api.opendota.com/api/heroStats')
+        self.hero_stats = to_json
         print()
         print('--- Server ready ---')
 
@@ -81,17 +90,28 @@ class Worker:
             return team_info
 
     def update_last_matches(self, team_id):
-        r = requests.get('https://api.opendota.com/api/teams/'
-                         + str(team_id) + '/matches')
-        to_json = r.json()
-        # print(to_json)
+        to_json = request_handler('https://api.opendota.com/api/teams/'
+                                       + str(team_id) + '/matches')
+
+        self.team_last_matches_without_details.append({'team_id': team_id, 'last': to_json})
+
+        if len(to_json) > 20:
+            to_json = to_json[0:20]
+
+        for match_index, match in enumerate(to_json):
+            print('fetching match details for {}, {} matches remaining...'.format(team_id, len(to_json) - match_index))
+            match['match_data'] = request_handler('https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?'
+                                                  'key=' + self.key + '&match_id=' + str(match['match_id']))
+            match['match_data']['result']['radiant_logo'] = fix_logo(match['match_data']['result']['radiant_team_id'])
+            match['match_data']['result']['dire_logo'] = fix_logo(match['match_data']['result']['dire_team_id'])
+
+            to_json[match_index] = match
+
         self.team_last_matches.append({'team_id': team_id, 'last': to_json})
 
     def update_active_players(self, team_id):
-        r = requests.get('https://api.opendota.com/api/teams/'
-                         + str(team_id) + '/players')
-        to_json = r.json()
-        # print(to_json)
+        to_json = request_handler('https://api.opendota.com/api/teams/'
+                                       + str(team_id) + '/players')
         only_active = []
         for i, player in enumerate(to_json):
             if player['is_current_team_member'] is True:
@@ -113,22 +133,20 @@ class Worker:
 
     def update_active_player_info(self, team_id, account_id):
         print('getting account id for team {} account id {}'.format(team_id, account_id))
-        r = requests.get('https://api.opendota.com/api/players/'
-                         + str(account_id))
-        to_json = r.json()
+        to_json = request_handler('https://api.opendota.com/api/players/'
+                                       + str(account_id))
         # print(to_json)
         self.active_player_info.append({'team_id': team_id, 'player': to_json})
         self.mmr_per_player.append({'team_id': team_id, 'account_id': account_id,
                                     'mmr_estimate': to_json['mmr_estimate'],
                                     'solo_competitive_rank': to_json['solo_competitive_rank']})
-        time.sleep(0.3)
+        time.sleep(0.5)
 
     def update_most_played_hero(self, account_id):
         # https://api.opendota.com/api/players/177085220/heroes
         try:
-            r = requests.get('https://api.opendota.com/api/players/'
+            to_json = request_handler('https://api.opendota.com/api/players/'
                              + str(account_id) + '/heroes')
-            to_json = r.json()
         except:
             to_json = {[{
                 'hero_id': "74",
@@ -150,9 +168,11 @@ class Worker:
             right_id = get_team(match['right'])['team_id']
             team1 = self.__get_matches_by_team_id(left_id)
             team2 = self.__get_matches_by_team_id(right_id)
+
             data = {'team1': team1['team_id'], 'team2': team2['team_id'], 'matches': []}
             for i in team1['last']:
                 for j in team2['last']:
+                    # print('comparing match_id between \n {} \n with \n {} \n\n\n'.format(i, j))
                     if i['match_id'] == j['match_id']:
                         if i['radiant'] is True:
                             if i['radiant_win'] is True:
@@ -164,11 +184,12 @@ class Worker:
                                 data['matches'].append({'match_info': i, 'won': right_id})
                             else:
                                 data['matches'].append({'match_info': i, 'won': right_id})
+                                # toDO: formula is wrong??
             # print(data)
             self.last_matches_between.append(data)
 
     def __get_matches_by_team_id(self, team_id):
-        for team in self.team_last_matches:
+        for team in self.team_last_matches_without_details:
             # print('comparing {} with {}'.format(team['team_id'], team_id))
             if team['team_id'] == int(team_id):
                 return team
@@ -182,7 +203,7 @@ class Worker:
     def get_team_by_id(self, team_id):
         # print('id for get team by id ', team_id)
         # print(self.team_info)
-        for team in self.team_info:
+        for team in get_json('teams'):
             if team['team_id'] == int(team_id):
                 return team
 
@@ -191,7 +212,9 @@ class Worker:
         # print(self.team_last_matches)
         for team in self.team_last_matches:
             if team['team_id'] == int(team_id):
-                return team
+                if len(team['last']) > 20:
+                    return team['last'][0:20]
+                return team['last']
 
     def get_active_players_by_team_id(self, team_id):
         players = []
@@ -211,9 +234,8 @@ class Worker:
 
     def get_player_heroes_by_id(self, player_id):
         for player in self.most_played_hero:
-            print(player)
             if player['account_id'] == int(player_id):
-                return player
+                return player['heroes'][0:5]
 
     def get_last_matches_between(self, team1_id, team2_id):
         for match in self.last_matches_between:
@@ -225,6 +247,49 @@ class Worker:
         self.upcoming_matches = self.gosu.fetch()
         time.sleep(60 + 30)
         # toDo: refresh all arrays
+
+    def get_hero_stats(self):
+        return self.hero_stats
+
+    def get_hero_by_id(self, hero_id):
+        for hero in self.hero_stats:
+            if hero['id'] == int(hero_id):
+                return hero
+
+    def get_batch_heroes_by_ids(self, hero_ids):
+        ids = [int(x) for x in hero_ids.split(',')]
+        batch = []
+        for hero in self.hero_stats:
+            if hero['id'] in ids and hero['id'] not in batch:  # no duplicates
+                batch.append(hero)
+        return batch
+
+    def get_batch_teams_by_team_ids(self, param):  # 123,12,1,4, etc.
+        arr = param.split(',')
+        return get_teams_by_batch_ids(arr)
+
+
+def request_handler(url):
+    tries = 0
+    r = requests.get(url)
+    while r.status_code != 200:
+        print('got code {}, retrying in 5 seconds'.format({r.status_code}))
+        time.sleep(5)
+        r = requests.get(url)
+        tries += 1
+        if tries == 5:
+            print('maximum tries, ending...')
+            break
+    return r.json()
+
+
+def fix_logo(team_id):
+    j = get_json('teams')
+    for i in j:
+        if i['team_id'] == team_id:
+            if i['logo_url'] is None:
+                return add_logo(i)['logo_url']
+            return i['logo_url']
 
 
 def add_logo(obj):
@@ -275,6 +340,16 @@ def get_team(name):
             #            "logo_url": "https://i.imgur.com/5gO7P9B.png",
             #            "last_match_time": 0
             #        },
+
+
+def get_teams_by_batch_ids(team_ids):
+    j = get_json('teams')
+    team_ids = [int(x) for x in team_ids]
+    teams = []
+    for team in j:
+        if team['team_id'] in team_ids and team['team_id'] not in teams:
+            teams.append(team)
+    return teams
 
 
 def get_json(filename):

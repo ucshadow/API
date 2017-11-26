@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import SelectedMatchLeft from "../../SmallComponents/SelectedMatchLeft";
-import SelectedMatchRight from "../../SmallComponents/SelectedMatchRight";
-import HistoryBetween from "../../SmallComponents/HistoryBetween";
+import SelectedMatchLeft from "../SmallComponents/SelectedMatchLeft";
+import SelectedMatchRight from "../SmallComponents/SelectedMatchRight";
+import HistoryBetween from "../SmallComponents/HistoryBetween";
 
 const default_ = {
   "left": {
@@ -46,7 +46,7 @@ export default class SelectedMatch extends Component {
     let h = this.props.dimensions.h;
     return {
       width: w - w / 5,
-      height: h - h / 5,
+      height: h - h / 2,
       float: 'left'
     }
   };

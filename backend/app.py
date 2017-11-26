@@ -127,7 +127,6 @@ def api_handler():
         if q == 'team_last_match':
             if not p.get('id'):
                 return send_error('team_last_match', q)
-            print(worker.get_team_last_match_by_id(p.get('id')))
             return jsonify(worker.get_team_last_match_by_id(p.get('id')))
         if q == 'active_players':  # todo: does not work
             if not p.get('id'):
@@ -141,6 +140,22 @@ def api_handler():
             if not p.get('id'):
                 return send_error('player_heroes', q)
             return jsonify(worker.get_player_heroes_by_id(p.get('id')))
+        if q == 'hero_stats':
+            if not p.get('id'):
+                return send_error('hero_stats must have any id', q)
+            return jsonify(worker.get_hero_stats())
+        if q == 'hero':
+            if not p.get('id'):
+                return send_error('hero', q)
+            return jsonify(worker.get_hero_by_id(p.get('id')))
+        if q == 'hero_batch':
+            if not p.get('ids'):
+                return send_error('hero_batch', q)
+            return jsonify(worker.get_batch_heroes_by_ids(p.get('ids')))  # query=hero_batch&ids=1,2,3,4,5
+        if q == 'team_batch':
+            if not p.get('ids'):
+                return send_error('team_batch', q)
+            return jsonify(worker.get_batch_teams_by_team_ids(p.get('ids')))  # query=team_batch&ids=1,2,3,4,5
         if q == 'matches_between':
             if not p.get('id1'):
                 return send_error('matches_between id1', q)

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {path} from "./Path";
 import DrawHistoryBetween from "./DrawHistoryBetween";
+import {localCache} from "../Helpers/LocalCache";
+import CacheFunctions from "../Helpers/CacheFunctions";
 
 export default class HistoryBetween extends Component {
 
@@ -22,13 +24,19 @@ export default class HistoryBetween extends Component {
   }
 
   getData = (id1, id2) => {
-    fetch(this.u + '/API/?query=matches_between&id1=' + id1 + '&id2=' + id2)
+    if(CacheFunctions.isCached(id1 + id2)) {
+      this.setState({history: CacheFunctions.getFromCache(id1 + id2)})
+    } else {
+      fetch(this.u + '/API/?query=matches_between&id1=' + id1 + '&id2=' + id2)
       .then((res) => {
         return res.json();
       })
       .then((res) => {
         this.setState({history: res});
+        localCache.push({id_: id1 + id2, data: res})
       });
+    }
+
   };
 
   calculateStyle = () => {

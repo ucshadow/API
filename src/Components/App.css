@@ -59,6 +59,7 @@ html, body {
 .avatar-container-right {
   width: 20%;
   float: right;
+  border: 1px solid white;
 }
 
 .avatar-container-left {
@@ -73,18 +74,16 @@ html, body {
 
 .team-logo-container-right {
   float: left;
-  width: 18%;
   margin-right: 20px;
-  border: 1px solid white;
 }
 
 .team-logo-container-left {
   float: right;
-  width: 18%;
 }
 
 .player-avatar {
   border: 1px solid white;
+  width: 100%;
 }
 
 .team-logo {
@@ -104,4 +103,24 @@ html, body {
   justify-content: center;
   flex-direction: column;
   text-align: center;
+}
+
+.team-history-container {
+  background-color: #3a3a3a;
+  position: absolute;
+}
+
+.best-heroes-single-hero {
+  float: left;
+  width: 33%;
+  box-sizing: border-box;
+  border: 1px solid white;
+}
+
+.chart-container {
+  position: absolute;
+}
+
+.history-square {
+  border: 1px solid white;
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TeamPlayers from "./TeamPlayers";
+import TeamMatchHistory from "../MediumComponents/TeamMatchHistory";
 
 const default_ = {
   data: {
@@ -14,7 +15,7 @@ const default_ = {
   }
 };
 
-export default class SelectedMatchLeft extends Component {
+export default class SelectedMatchRight extends Component {
 
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ export default class SelectedMatchLeft extends Component {
 
   calculateStyle = () => {
     return {
-      width: this.props.dimensions.w / 3,
+      width: this.props.dimensions.w / 3.1,
       height: this.props.dimensions.h / 2,
       border: '1px solid white',
       float: 'left'
@@ -37,12 +38,12 @@ export default class SelectedMatchLeft extends Component {
 
   render() {
     return (
-      <div style={this.calculateStyle()} className='selected-match-left'>
-        <div className='team-logo-container-left'>
+      <div style={this.calculateStyle()} className='selected-match-right'>
+        <div className='team-logo-container-right' style={{width: this.props.dimensions.w / 24}}>
           <img className='team-logo' src={this.props.data.logo_url}/>
         </div>
-
-        <TeamPlayers teamId={this.props.data.team_id} side={'left'}/>
+        <TeamPlayers teamId={this.props.data.team_id} side={'right'}/>
+        <TeamMatchHistory teamId={this.props.data.team_id} dimensions={this.props.dimensions}/>
       </div>
     )
   }
