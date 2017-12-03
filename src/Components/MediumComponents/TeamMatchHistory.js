@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import CacheFunctions from "../Helpers/CacheFunctions";
 import {localCache} from "../Helpers/LocalCache";
 import {path} from "../SmallComponents/Path";
-import TeamHistoryChartData from "./TeamHistoryChartData";
 import TeamHistoryChart from "./TeamHistoryChart";
 import {wins} from "../Helpers/WinTracker";
 
@@ -56,6 +55,7 @@ export default class TeamMatchHistory extends Component {
       return <TeamHistoryChart data={this.state.history}
                                dimensions={this.calculateStyle()}
                                team_id={this.props.teamId}
+                               left={this.props.left}
       />
     }
   };

@@ -156,6 +156,10 @@ def api_handler():
             if not p.get('ids'):
                 return send_error('team_batch', q)
             return jsonify(worker.get_batch_teams_by_team_ids(p.get('ids')))  # query=team_batch&ids=1,2,3,4,5
+        if q == 'player_batch':
+            if not p.get('ids'):
+                return send_error('player_batch', q)
+            return jsonify(worker.get_batch_players_by_player_ids(p.get('ids')))  # query=team_batch&ids=1,2,3,4,5
         if q == 'matches_between':
             if not p.get('id1'):
                 return send_error('matches_between id1', q)

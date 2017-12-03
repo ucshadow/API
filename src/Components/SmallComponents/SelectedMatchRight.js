@@ -43,7 +43,7 @@ export default class SelectedMatchRight extends Component {
           <img className='team-logo' src={this.props.data.logo_url}/>
         </div>
         <TeamPlayers teamId={this.props.data.team_id} side={'right'}/>
-        <TeamMatchHistory teamId={this.props.data.team_id} dimensions={this.props.dimensions}/>
+        <TeamMatchHistory teamId={this.props.data.team_id} dimensions={this.props.dimensions} left={false}/>
       </div>
     )
   }

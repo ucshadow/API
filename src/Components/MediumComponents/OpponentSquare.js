@@ -28,7 +28,7 @@ export default class OpponentSquare extends Component {
       position: 'absolute',
       left: this.props.index * (this.w / this.props.active),
       top: top,
-      border: this.calculateBorder()
+      border: this.calculateBorder(),
     }
   };
 
@@ -68,6 +68,11 @@ export default class OpponentSquare extends Component {
   };
 
   calculateBorder = () => {
+
+    if(this.props.selected === this.props.index) {
+      return '2px solid white'
+    }
+
     if (this.props.index === 0) {
       return '1px solid blue';
     }
@@ -100,9 +105,13 @@ export default class OpponentSquare extends Component {
     return s;
   };
 
+  setSelected = () => {
+    this.props.setSelected(this.props.index);
+  };
+
   render() {
     return (
-      <div style={this.calculateStyle()} className='history-square'>
+      <div style={this.calculateStyle()} className='history-square' onClick={this.setSelected}>
         <img src={this.getOpponent('logo')}
              title={this.getOpponent('name')}
              style={{width: '100%', height: '100%'}}

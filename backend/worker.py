@@ -24,7 +24,7 @@ class Worker:
         self.last_matches_between = []
         self.hero_stats = []
         self.team_last_matches_without_details = []
-        self.key = '1234'  # toDO:dont push this!
+        self.key = '9CF2D80F06ED53805E51530C8E3491A4'  # toDO:dont push this!
 
         self.loop()
 
@@ -91,7 +91,7 @@ class Worker:
 
     def update_last_matches(self, team_id):
         to_json = request_handler('https://api.opendota.com/api/teams/'
-                                       + str(team_id) + '/matches')
+                                  + str(team_id) + '/matches')
 
         self.team_last_matches_without_details.append({'team_id': team_id, 'last': to_json})
 
@@ -111,7 +111,7 @@ class Worker:
 
     def update_active_players(self, team_id):
         to_json = request_handler('https://api.opendota.com/api/teams/'
-                                       + str(team_id) + '/players')
+                                  + str(team_id) + '/players')
         only_active = []
         for i, player in enumerate(to_json):
             if player['is_current_team_member'] is True:
@@ -134,7 +134,7 @@ class Worker:
     def update_active_player_info(self, team_id, account_id):
         print('getting account id for team {} account id {}'.format(team_id, account_id))
         to_json = request_handler('https://api.opendota.com/api/players/'
-                                       + str(account_id))
+                                  + str(account_id))
         # print(to_json)
         self.active_player_info.append({'team_id': team_id, 'player': to_json})
         self.mmr_per_player.append({'team_id': team_id, 'account_id': account_id,
@@ -146,7 +146,7 @@ class Worker:
         # https://api.opendota.com/api/players/177085220/heroes
         try:
             to_json = request_handler('https://api.opendota.com/api/players/'
-                             + str(account_id) + '/heroes')
+                                      + str(account_id) + '/heroes')
         except:
             to_json = {[{
                 'hero_id': "74",
@@ -231,6 +231,7 @@ class Worker:
         for player in self.active_player_info:
             if player['player']['profile']['account_id'] == int(player_id):
                 return player
+        return get_player_by_id(player_id)  # no point in having 500 players locally? or is it for less I/O.
 
     def get_player_heroes_by_id(self, player_id):
         for player in self.most_played_hero:
@@ -268,14 +269,18 @@ class Worker:
         arr = param.split(',')
         return get_teams_by_batch_ids(arr)
 
+    def get_batch_players_by_player_ids(self, param):  # 123,12,1,4, etc.
+        arr = param.split(',')
+        return get_players_by_batch_ids(arr)
+
 
 def request_handler(url):
     tries = 0
-    r = requests.get(url)
+    r = requests.get(url, )
     while r.status_code != 200:
         print('got code {}, retrying in 5 seconds'.format({r.status_code}))
         time.sleep(5)
-        r = requests.get(url)
+        r = requests.get(url, )
         tries += 1
         if tries == 5:
             print('maximum tries, ending...')
@@ -352,9 +357,26 @@ def get_teams_by_batch_ids(team_ids):
     return teams
 
 
+def get_players_by_batch_ids(player_ids):
+    j = get_json('pro_players')
+    player_ids = [int(x) for x in player_ids]
+    players = []
+    for player in j:
+        if player['account_id'] in player_ids and player['team_id'] not in players:
+            players.append(player)
+    return players
+
+
 def get_json(filename):
     with open('files/' + filename + '.json', 'r') as f:
         return json.load(f)
+
+
+def get_player_by_id(player_id):
+    j = get_json('pro_players')
+    for player in j:
+        if player['account_id'] == int(player_id):
+            return player
 
 
 if __name__ == '__main__':

@@ -124,3 +124,47 @@ html, body {
 .history-square {
   border: 1px solid white;
 }
+
+.tournament-title {
+  position: absolute;
+  bottom: 2px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.show-single-team-image {
+  width: 40%;
+  float: right;
+}
+
+.show-single-team-player {
+  width: 40%;
+  float: left;
+}
+
+.team-logo-match-details-container {
+  width: 60%;
+  left: 20%;
+  position: absolute;
+}
+
+.team-logo-match-details-container img {
+  position: absolute;
+}
+
+.show-selected-match-versus {
+  position: absolute;
+  text-align: center;
+  font-size: 4em;
+  width: 100%;
+}
+
+.score-match-details-container {
+  top: 40%;
+  position: absolute;
+  text-align: center;
+  font-size: 4em;
+  width: 100%;
+  display: flex;
+}

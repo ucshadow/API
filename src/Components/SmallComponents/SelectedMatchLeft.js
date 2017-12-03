@@ -44,7 +44,7 @@ export default class SelectedMatchLeft extends Component {
         </div>
 
         <TeamPlayers teamId={this.props.data.team_id} side={'left'}/>
-        <TeamMatchHistory teamId={this.props.data.team_id} dimensions={this.props.dimensions}/>
+        <TeamMatchHistory teamId={this.props.data.team_id} dimensions={this.props.dimensions} left={true}/>
       </div>
     )
   }
