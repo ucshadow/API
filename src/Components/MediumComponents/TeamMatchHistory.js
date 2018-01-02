@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
-import CacheFunctions from "../Helpers/CacheFunctions";
-import {localCache} from "../Helpers/LocalCache";
-import {path} from "../SmallComponents/Path";
 import TeamHistoryChart from "./TeamHistoryChart";
 import {wins} from "../Helpers/WinTracker";
+import provider from "../Helpers/RequestProvider";
 
 export default class TeamMatchHistory extends Component {
 
   constructor() {
     super();
     this.state = {history: []};
-    this.u = path
   }
 
   static defaultProps = {
@@ -26,20 +23,9 @@ export default class TeamMatchHistory extends Component {
   }
 
   getData = (id_) => {
-    if (CacheFunctions.isCached(id_ + 'history')) {
-      // console.log(CacheFunctions.getFromCache(id_));
-      this.setState({history: CacheFunctions.getFromCache(id_ + 'history')})
-    } else {
-      fetch(this.u + '/API/?query=team_last_match&id=' + id_)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          localCache.push({id_: id_ + 'history', data: res});
-          this.setState({history: res});
-        });
-    }
-
+    provider('history', id_ + 'history', '/API/?query=team_last_match&id=' + id_, (res) => {
+      this.setState(res);
+    });
   };
 
   calculateStyle = () => {

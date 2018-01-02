@@ -45,24 +45,25 @@ export default class OpponentSquare extends Component {
     if (this.props.match_info.radiant) {
       // if radiant wins
       if (this.props.match_info.radiant_win) {
-        // I should go up so height is added to the array
-        wins[this.props.team_id].push(this.step);
+        // I should go up so negative height is added to the array (y axis is decreased, so the box
+        // should be higher on the screen)
+        wins[this.props.team_id].push(this.step * -1);
         // return middle of the div - half the box size - sum of array
         return this.h / 2 - (this.w / 20 / 2) - this.sumWins();
       }
-      // if dire wins I should go down so negative box height is added to the array
-      wins[this.props.team_id].push(this.step * -1);
+      // if dire wins I should go down so box height is added to the array
+      wins[this.props.team_id].push(this.step);
       return this.h / 2 - (this.w / 20 / 2) - this.sumWins();
 
     }
     // else I'm dire
     if (this.props.match_info.radiant_win) {
       // I should go down
-      wins[this.props.team_id].push(this.step * -1);
+      wins[this.props.team_id].push(this.step);
       return this.h / 2 - (this.w / 20 / 2) - this.sumWins();
     }
     // else I should go up
-    wins[this.props.team_id].push(this.step);
+    wins[this.props.team_id].push(this.step * -1);
     return this.h / 2 - (this.w / 20 / 2) - this.sumWins();
 
   };

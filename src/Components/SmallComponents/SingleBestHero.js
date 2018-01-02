@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {path} from "./Path";
-import CacheFunctions from "../Helpers/CacheFunctions";
+import provider from "../Helpers/RequestProvider";
 
 export default class SingleBestHero extends Component {
 
   constructor() {
     super();
     this.state = {hero: undefined};
-    this.u = path;
     this.iconPath = 'http://cdn.dota2.com';
   }
 
@@ -16,18 +14,9 @@ export default class SingleBestHero extends Component {
   }
 
   getData = (id_) => {
-    if (CacheFunctions.areHeroesCached()) {
-      this.setState({hero: CacheFunctions.getFromHeroCache(id_)})
-    } else {
-      fetch(this.u + '/API/?query=hero&id=' + id_)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({hero: res});
-        });
-    }
-
+    provider('hero', id_ + 'hero', '/API/?query=hero&id=' + id_, (res) => {
+      this.setState(res);
+    });
   };
 
   showHeroImage = () => {

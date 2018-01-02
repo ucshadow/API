@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import CacheFunctions from "../Helpers/CacheFunctions";
-import {localCache} from "../Helpers/LocalCache";
 
 export default class DetailsSingleTeamDrawer extends Component {
 

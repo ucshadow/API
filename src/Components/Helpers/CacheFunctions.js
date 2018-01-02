@@ -3,6 +3,8 @@ import {heroCache} from "./HeroCache";
 
 export default class CacheFunctions {
 
+  // toDo: maybe clear the cache once in a while
+
   static isCached = (id_) => {
     for (let i = 0; i < localCache.length; i++) {
       if (localCache[i].id_ === id_) {
@@ -23,13 +25,5 @@ export default class CacheFunctions {
       }
     }
   };
-
-  static getFromHeroCache = (id_) => {
-    for (let i = 0; i < heroCache[0].length; i++) {
-      if (heroCache[0][i].id === id_ * 1) { // type conversion lol
-        return heroCache[0][i];
-      }
-    }
-  }
 
 }

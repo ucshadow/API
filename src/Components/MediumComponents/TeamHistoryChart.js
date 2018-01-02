@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import OpponentSquare from "./OpponentSquare";
 import ShowSelectedMatch from "./ShowSelectedMatch";
-import {path} from "../SmallComponents/Path";
 
 export default class TeamHistoryChart extends Component {
 
   constructor() {
     super();
-    this.u = path;
     this.state = {active: 20, selected: 0, cached: false};
   }
 

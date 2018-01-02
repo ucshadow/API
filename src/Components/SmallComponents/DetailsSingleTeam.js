@@ -23,6 +23,7 @@ export default class DetailsSingleTeam extends Component {
   }
 
   solvePlayerInfo = (a) => {
+    // this is a more complex version of the fetch so the provider is not used here.
     let query = [];
     a.map((e) => {
       query.push(e.player_data.account_id + '')

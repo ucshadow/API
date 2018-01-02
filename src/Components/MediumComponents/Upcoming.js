@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {path} from "../SmallComponents/Path";
 import UpcomingMatch from "../SmallComponents/UpcomingMatch";
+import provider from "../Helpers/RequestProvider";
+import {localCache} from "../Helpers/LocalCache";
 
 export default class Upcoming extends Component {
 
@@ -35,6 +37,7 @@ export default class Upcoming extends Component {
         return res.json();
       })
       .then((res) => {
+        localCache.push({id_: 'upcoming', 'data': res});
         this.setState({details: res});
         this.props.activate(res[0])
       });

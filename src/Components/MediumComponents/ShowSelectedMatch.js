@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
-import {path} from "../SmallComponents/Path";
-import CacheFunctions from "../Helpers/CacheFunctions";
-import {localCache} from "../Helpers/LocalCache";
 import DetailsSingleTeam from "../SmallComponents/DetailsSingleTeam";
+import provider from "../Helpers/RequestProvider";
 
 export default class ShowSelectedMatch extends Component {
 
   constructor(props) {
     super(props);
-    this.u = path;
     this.state = {allHeroes: []}
   }
 
@@ -17,18 +14,9 @@ export default class ShowSelectedMatch extends Component {
   }
 
   getData = (id_) => {
-    if (CacheFunctions.isCached(id_)) {
-      this.setState({players: CacheFunctions.getFromCache(id_)})
-    } else {
-      fetch(this.u + '/API/?query=hero_stats&id=1')
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({allHeroes: res});
-          localCache.push({id_: id_, data: res})
-        });
-    }
+    provider('allHeroes', id_ + 'allHeroes', '/API/?query=hero_stats&id=1' + id_, (res) => {
+      this.setState(res);
+    });
   };
 
   calculateStyle = () => {
@@ -180,7 +168,6 @@ export default class ShowSelectedMatch extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className='selected-match-details-container' style={this.calculateStyle()}>
         {this.showTeams()}

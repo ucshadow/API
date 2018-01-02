@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SelectedMatchLeft from "../SmallComponents/SelectedMatchLeft";
 import SelectedMatchRight from "../SmallComponents/SelectedMatchRight";
 import HistoryBetween from "../SmallComponents/HistoryBetween";
+import WinChances from "../SmallComponents/WinChances";
 
 const default_ = {
   "left": {
@@ -59,6 +60,13 @@ export default class SelectedMatch extends Component {
     this.props.activate(this.changeDetails)
   }
 
+  showWinChances = () => {
+    if(this.state.details.left.team_id !== 0) {
+      return <WinChances left={this.state.details.left} right={this.state.details.right}
+                         dimensions={this.props.dimensions}/>
+    }
+  };
+
   render() {
     return (
       <div className='select-match' style={this.style}>
@@ -82,6 +90,7 @@ export default class SelectedMatch extends Component {
           ]}
           dimensions={this.props.dimensions}/>
         <SelectedMatchRight data={this.state.details.right} dimensions={this.props.dimensions}/>
+        {this.showWinChances()}
       </div>
     )
   }

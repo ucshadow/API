@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {path} from "./Path";
 import PlayerInfo from "./PlayerInfo";
-import {localCache} from "../Helpers/LocalCache";
-import CacheFunctions from "../Helpers/CacheFunctions";
+import provider from "../Helpers/RequestProvider";
 
 
 export default class TeamPlayers extends Component {
@@ -10,7 +8,6 @@ export default class TeamPlayers extends Component {
   constructor() {
     super();
     this.state = {players: []};
-    this.u = path;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -24,18 +21,9 @@ export default class TeamPlayers extends Component {
   };
 
   getData = (id_) => {
-    if (CacheFunctions.isCached(id_)) {
-      this.setState({players: CacheFunctions.getFromCache(id_)})
-    } else {
-      fetch(this.u + '/API/?query=active_players&id=' + id_)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          this.setState({players: res});
-          localCache.push({id_: id_, data: res})
-        });
-    }
+    provider('players', id_, '/API/?query=active_players&id=' + id_, (res) => {
+      this.setState(res);
+    });
   };
 
   showPlayers = () => {
