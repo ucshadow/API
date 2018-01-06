@@ -36,26 +36,30 @@ export default class ShowSelectedMatch extends Component {
       let team2Picks = [];
       let team2Bans = [];
 
-      this.props.data.match_data.result.picks_bans.map((e) => {
+      // last minor (5 to 7 of January) was not Captain's mode
+      // but Captain's draft, so no ban and picks.
+      if(this.props.data.match_data.result.picks_bans) {
+        this.props.data.match_data.result.picks_bans.map((e) => {
 
-        if (e.is_pick) {
-          e['hero_data'] = this.getHeroDataById(e.hero_id);
-          e['player_data'] = this.getRespectivePlayerByHeroId(e.hero_id);
-        }
-        if (e.team === 0) { // team 1
           if (e.is_pick) {
-            team1Picks.push(e);
-          } else {
-            team1Bans.push(e);
+            e['hero_data'] = this.getHeroDataById(e.hero_id);
+            e['player_data'] = this.getRespectivePlayerByHeroId(e.hero_id);
           }
-        } else {
-          if (e.is_pick) {
-            team2Picks.push(e);
+          if (e.team === 0) { // team 1
+            if (e.is_pick) {
+              team1Picks.push(e);
+            } else {
+              team1Bans.push(e);
+            }
           } else {
-            team2Bans.push(e);
+            if (e.is_pick) {
+              team2Picks.push(e);
+            } else {
+              team2Bans.push(e);
+            }
           }
-        }
-      });
+        });
+      }
 
       return (
         <div>

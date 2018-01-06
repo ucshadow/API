@@ -63,7 +63,6 @@ export default class ComparisonBarPreparation extends Component {
   };
 
   showChances = (arr) => {
-    console.log(arr);
     let leftChances = [];
     let rightChances = [];
 

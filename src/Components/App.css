@@ -14,8 +14,8 @@ html, body {
 }
 
 .select-match {
+  position: relative;
   height: 70%;
-  background: gray;
   color: whitesmoke;
 }
 
@@ -33,10 +33,12 @@ html, body {
 
 .upcoming-match {
   border: 1px solid white;
+  height: 50%;
 }
 
-.select-match {
-  position: relative;
+.upcoming-match img {
+  width: 50%;
+  height: 100%;
 }
 
 .selected-match-right {
@@ -91,7 +93,8 @@ html, body {
 }
 
 .history-between {
-  border: 1px solid green;
+  /*border: 1px solid green;*/
+  background: #1e1d1a;
   margin-left: 10px;
   margin-right: 10px;
   float: left;
@@ -151,6 +154,7 @@ html, body {
 
 .team-logo-match-details-container img {
   position: absolute;
+  width: 4vw;
 }
 
 .show-selected-match-versus {

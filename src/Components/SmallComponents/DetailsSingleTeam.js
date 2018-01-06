@@ -29,6 +29,9 @@ export default class DetailsSingleTeam extends Component {
       query.push(e.player_data.account_id + '')
     });
     let queryString = query.join(',');
+    if(query.length === 0) {
+      queryString = '113800818,137193239,134276083,89423756,107803494'; // dummy query
+    }
 
     if (CacheFunctions.isCached(queryString)) {
       this.setState({playerInfo: CacheFunctions.getFromCache(queryString)})
