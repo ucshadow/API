@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {path} from "../SmallComponents/Path";
-import UpcomingMatch from "../SmallComponents/UpcomingMatch";
-import provider from "../Helpers/RequestProvider";
-import {localCache} from "../Helpers/LocalCache";
+import {path} from '../SmallComponents/Path';
+import UpcomingMatch from '../SmallComponents/UpcomingMatch';
+import {localCache} from '../Helpers/LocalCache';
 
+/**
+ * Component responsible for the upcoming matches (right list)
+ */
 export default class Upcoming extends Component {
 
   constructor(props) {

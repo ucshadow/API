@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import SelectedMatchLeft from "../SmallComponents/SelectedMatchLeft";
-import SelectedMatchRight from "../SmallComponents/SelectedMatchRight";
-import HistoryBetween from "../SmallComponents/HistoryBetween";
-import WinChances from "../SmallComponents/WinChances";
+import SelectedMatchLeft from '../SmallComponents/SelectedMatchLeft';
+import SelectedMatchRight from '../SmallComponents/SelectedMatchRight';
+import HistoryBetween from '../SmallComponents/HistoryBetween';
+import WinChances from '../SmallComponents/WinChances';
 
 const default_ = {
   "left": {
@@ -28,6 +28,10 @@ const default_ = {
   "status": ""
 };
 
+/**
+ * Shows the selected match. The match can be selected form the right list.
+ * This Component is the root Component for all other component besides the match list (in the right)
+ */
 export default class SelectedMatch extends Component {
 
   constructor(props) {
@@ -61,7 +65,7 @@ export default class SelectedMatch extends Component {
   }
 
   showWinChances = () => {
-    if(this.state.details.left.team_id !== 0) {
+    if (this.state.details.left.team_id !== 0) {
       return <WinChances left={this.state.details.left} right={this.state.details.right}
                          dimensions={this.props.dimensions}/>
     }

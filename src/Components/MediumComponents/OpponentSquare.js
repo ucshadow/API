@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {wins} from "../Helpers/WinTracker";
+import {wins} from '../Helpers/WinTracker';
 
+/**
+ * Draws a square for a specific opponent in the match history graph of a team
+ */
 export default class OpponentSquare extends Component {
-
 
   constructor(props) {
     super(props);
@@ -12,6 +14,11 @@ export default class OpponentSquare extends Component {
     this.state = {logo: undefined}
   }
 
+  /**
+   * Gets the main team opponent for the match that is shown. The opponent can be either dire or radiant
+   * @param q {string} either the name of the opponent or the logo
+   * @returns {*}
+   */
   getOpponent = (q) => {
     if (this.props.match_info.radiant) {
       return this.props.match_info.match_data.result['dire_' + q];
@@ -20,6 +27,13 @@ export default class OpponentSquare extends Component {
     return this.props.match_info.match_data.result['radiant_' + q];
   };
 
+  /**
+   * calculates the style of the Component (the square) based on the screen resolution.
+   * Specifically here, it also calculates the left distance based on the index of the match,
+   * the end result being that the last match is shown to the left and the distance
+   * from left increases with match history, the 20'th from last match being the farther from left
+   * @returns {{width: number, height: number, position: string, left: number, top: *, border: string}}
+   */
   calculateStyle = () => {
     let top = this.calculateTop();
     return {
@@ -32,9 +46,15 @@ export default class OpponentSquare extends Component {
     }
   };
 
+  /**
+   * Calculates the position of the Component (the square) from the top of the parent element.
+   * If the main team won a game, the square for the specific match should be higher than the previous
+   * square, and lower if the main team lost the match, the overall graph representing the history of the team
+   * @returns {number}
+   */
   calculateTop = () => {
     if (this.props.index === 0) {
-      // refresh because rerender cause double sum
+      // refresh because re-render causes double sum
       if (wins[this.props.team_id].length > 0) {
         wins[this.props.team_id] = [];
       }
@@ -68,12 +88,16 @@ export default class OpponentSquare extends Component {
 
   };
 
+  /**
+   * Calculates the border of the Element (the square) based on the same principles as the {calculateTop}
+   * function. Fora win the border is red, for a loss the border is green. The last match played is always
+   * blue, the last match is in the center (vertically), being the reference match for the whole graph
+   * @returns {string}
+   */
   calculateBorder = () => {
-
-    if(this.props.selected === this.props.index) {
+    if (this.props.selected === this.props.index) {
       return '2px solid white'
     }
-
     if (this.props.index === 0) {
       return '1px solid blue';
     }
@@ -98,6 +122,11 @@ export default class OpponentSquare extends Component {
     return '1px solid green'
   };
 
+  /**
+   * sums the wins of the main team. It should ensure that the graph does not overflow
+   * even if the main team only had wins or loses
+   * @returns {number}
+   */
   sumWins = () => {
     let s = 0;
     wins[this.props.team_id].forEach((e) => {

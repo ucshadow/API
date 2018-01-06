@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import DrawHistoryBetween from "./DrawHistoryBetween";
-import provider from "../Helpers/RequestProvider";
+import DrawHistoryBetween from './DrawHistoryBetween';
+import provider from '../Helpers/RequestProvider';
 
 export default class HistoryBetween extends Component {
 

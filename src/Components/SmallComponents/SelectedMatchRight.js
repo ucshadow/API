@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import TeamPlayers from "./TeamPlayers";
-import TeamMatchHistory from "../MediumComponents/TeamMatchHistory";
+import TeamPlayers from './TeamPlayers';
+import TeamMatchHistory from '../MediumComponents/TeamMatchHistory';
 
 const default_ = {
   data: {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import TeamHistoryChart from "./TeamHistoryChart";
-import {wins} from "../Helpers/WinTracker";
-import provider from "../Helpers/RequestProvider";
+import TeamHistoryChart from './TeamHistoryChart';
+import {wins} from '../Helpers/WinTracker';
+import provider from '../Helpers/RequestProvider';
 
 export default class TeamMatchHistory extends Component {
 
@@ -16,7 +16,6 @@ export default class TeamMatchHistory extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.teamId > 0) {
-      // console.log('fetching history for ' + nextProps.teamId);
       this.getData(nextProps.teamId);
       wins[nextProps.teamId] = []
     }
@@ -47,7 +46,6 @@ export default class TeamMatchHistory extends Component {
   };
 
   render() {
-    // console.log(this.state.history);
     return (
       <div style={this.calculateStyle()} className='team-history-container'>
         {this.showHistoryChart()}

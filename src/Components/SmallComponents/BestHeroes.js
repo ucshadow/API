@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import SingleBestHero from "./SingleBestHero";
+import SingleBestHero from './SingleBestHero';
 
-
+/**
+ * Draws a player's top 3 most played heroes. They are displayed under the player's portrait
+ */
 export default class BestHeroes extends Component {
 
   constructor(props) {

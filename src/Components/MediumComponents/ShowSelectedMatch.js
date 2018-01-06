@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-import DetailsSingleTeam from "../SmallComponents/DetailsSingleTeam";
-import provider from "../Helpers/RequestProvider";
+import DetailsSingleTeam from '../SmallComponents/DetailsSingleTeam';
+import provider from '../Helpers/RequestProvider';
 
+
+/**
+ * Shows details (at the bottom of the screen) about the selected match
+ */
 export default class ShowSelectedMatch extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {allHeroes: []}
   }
 
@@ -38,7 +42,7 @@ export default class ShowSelectedMatch extends Component {
 
       // last minor (5 to 7 of January) was not Captain's mode
       // but Captain's draft, so no ban and picks.
-      if(this.props.data.match_data.result.picks_bans) {
+      if (this.props.data.match_data.result.picks_bans) {
         this.props.data.match_data.result.picks_bans.map((e) => {
 
           if (e.is_pick) {

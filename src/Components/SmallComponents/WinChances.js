@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CacheFunctions from "../Helpers/CacheFunctions";
+import CacheFunctions from '../Helpers/CacheFunctions';
 import ComparisonBarPreparation from './ComparisonBarPreparation';
 
 export default class WinChances extends Component {
@@ -55,8 +55,7 @@ export default class WinChances extends Component {
     let upcoming = CacheFunctions.getFromCache('upcoming');
 
     if (leftPlayers && rightPlayers) {
-      // console.log('-------- leaderBoard ranks -----------');
-      this.calculateLeaderBoardRank(leftPlayers, rightPlayers)
+      this.calculateLeaderBoardRank(leftPlayers, rightPlayers);
       total++;
     }
 
@@ -71,16 +70,12 @@ export default class WinChances extends Component {
     }
 
     if(heroes) {
-      // console.log('------------- score with most played 5 heroes ---------------');
-      // console.log('left: ');
       this.values.left.top5Heroes = this.calculateTop5Heroes(leftPlayers, heroes);
-      // console.log('right: ');
       this.values.right.top5Heroes = this.calculateTop5Heroes(rightPlayers, heroes);
       total++
     }
 
     if(upcoming) {
-      // console.log('------------- team ratings ---------------');
       this.values.left.teamRating = this.calculateTeamRating(leftId, upcoming);
       this.values.right.teamRating = this.calculateTeamRating(rightId, upcoming);
       total++;
@@ -102,14 +97,12 @@ export default class WinChances extends Component {
     });
     this.values.left.leaderBoard = leftLBRank;
     this.values.right.leaderBoard = rightLBRank;
-    // return 'left ' + leftLBRank + ' vs ' + rightLBRank + ' right';
   };
 
   calculateLast20Wins = (left20, right20) => {
     let leftWinArr = this.parseHistory(left20);
     let rightWinArr = this.parseHistory(right20);
 
-    // console.log('-------- last 20 wins score -----------');
     this.values.left.last20Matches = this.calculateHistoryScore(leftWinArr);
     this.values.right.last20Matches = this.calculateHistoryScore(rightWinArr);
   };
@@ -119,7 +112,6 @@ export default class WinChances extends Component {
       history = history.slice(0, 10);
     }
 
-    // console.log('-------- history between -----------');
     this.parseHistoryBetween(history, leftId)
   };
 
@@ -228,10 +220,6 @@ export default class WinChances extends Component {
   };
 
   render() {
-    // console.log(this.props);
-    // console.log(localCache);
-    // console.log(this.state.data.left);
-    // console.log(this.state.data.right);
     return (
       <div className='win-chances'>
         {this.drawBars()}

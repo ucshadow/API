@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import provider from "../Helpers/RequestProvider";
+import provider from '../Helpers/RequestProvider';
 
 export default class SingleBestHero extends Component {
 

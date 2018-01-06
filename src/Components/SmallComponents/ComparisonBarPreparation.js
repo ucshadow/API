@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import ComparisonBar from './ComparisonBar';
 
+/**
+ * Prepares the data for the 'chances to win' comparison. Also draws the middle pink line
+ */
 export default class ComparisonBarPreparation extends Component {
 
   constructor() {
@@ -37,7 +40,6 @@ export default class ComparisonBarPreparation extends Component {
   };
 
   calculateStyle = () => {
-    // console.log(this.props.dimensions);
     return {
       position: 'absolute',
       width: this.props.dimensions.w / 7.65,

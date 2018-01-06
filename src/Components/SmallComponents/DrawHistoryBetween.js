@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TeamWonInfo from "./TeamWonInfo";
+import TeamWonInfo from './TeamWonInfo';
 
 
 export default class DrawHistoryBetween extends Component {

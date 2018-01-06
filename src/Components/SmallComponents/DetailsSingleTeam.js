@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import CacheFunctions from "../Helpers/CacheFunctions";
-import {path} from "./Path";
-import {localCache} from "../Helpers/LocalCache";
-import DetailsSingleTeamDrawer from "./DetailsSingleTeamDrawer";
+import CacheFunctions from '../Helpers/CacheFunctions';
+import {path} from './Path';
+import {localCache} from '../Helpers/LocalCache';
+import DetailsSingleTeamDrawer from './DetailsSingleTeamDrawer';
 
-
+/**
+ * Details for a single team. It queries info for all 5 players
+ */
 export default class DetailsSingleTeam extends Component {
 
 

@@ -4,7 +4,6 @@ export default class DetailsSingleTeamDrawer extends Component {
 
   constructor(props) {
     super(props);
-    // console.log(this.props);
   }
 
   showPicks = () => {
@@ -40,16 +39,6 @@ export default class DetailsSingleTeamDrawer extends Component {
     }
   };
 
-  calculateLogoStyle = () => {
-    // toDo: change this to match screen dimension!
-    return {
-      position: 'absolute',
-      left: this.areWeTheBadGuys() ? 225 : null,
-      right: this.areWeTheBadGuys() ? null : 255
-
-    }
-  };
-
   solveTeamNames = () => {
     let selfId = this.props.players[0].team_id;  // get team id from a player
     return this.props.data.match_data.result.radiant_team_id === selfId ?
@@ -62,7 +51,6 @@ export default class DetailsSingleTeamDrawer extends Component {
   };
 
   render() {
-    // console.log(this.props);
     return (
       <div style={{
         left: this.areWeTheBadGuys() ? 0 : null,

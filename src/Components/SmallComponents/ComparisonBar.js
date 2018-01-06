@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 
+/**
+ * Draws the bar responsible for displaying the difference between 2 team properties
+ * used in calculating a team's chance to win
+ */
 export default class ComparisonBar extends Component {
 
   constructor() {
@@ -7,7 +11,6 @@ export default class ComparisonBar extends Component {
   }
 
   calculateStyle = () => {
-    // console.log(this.direction() + ' ' + this.barWidth());
     return {
       position: 'absolute',
       height: this.props.dimensions.h / 28,
@@ -30,7 +33,6 @@ export default class ComparisonBar extends Component {
 
   barWidth = () => {
     let w = Math.abs(this.props.data[0] - this.props.data[1]);
-    // console.log('for ' + this.props.data[0] + ' and ' + this.props.data[1] + ' -> ' + w);
     while(w > 100) {
       w /= 10;
     }

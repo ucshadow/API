@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import OpponentSquare from "./OpponentSquare";
-import ShowSelectedMatch from "./ShowSelectedMatch";
+import OpponentSquare from './OpponentSquare';
+import ShowSelectedMatch from './ShowSelectedMatch';
 
+/**
+ * Draws the team match history (last 20 matches)
+ */
 export default class TeamHistoryChart extends Component {
 
   constructor() {
@@ -10,6 +13,10 @@ export default class TeamHistoryChart extends Component {
   }
 
 
+  /**
+   * draws a OpponentSquare for each match in history
+   * @returns {Uint8Array | any[] | Int32Array | Uint16Array | Uint32Array | Float64Array | any}
+   */
   drawSquares = () => {
     let data = this.props.data;
     if (data.length > this.state.active) {

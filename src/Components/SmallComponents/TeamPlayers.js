@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import PlayerInfo from "./PlayerInfo";
-import provider from "../Helpers/RequestProvider";
+import PlayerInfo from './PlayerInfo';
+import provider from '../Helpers/RequestProvider';
 
 
 export default class TeamPlayers extends Component {

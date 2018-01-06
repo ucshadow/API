@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import BestHeroes from "./BestHeroes";
-import provider from "../Helpers/RequestProvider";
+import BestHeroes from './BestHeroes';
+import provider from '../Helpers/RequestProvider';
 
 
 export default class PlayerInfo extends Component {

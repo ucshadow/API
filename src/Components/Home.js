@@ -7,9 +7,17 @@ import {path} from "./SmallComponents/Path";
 import {heroCache} from "./Helpers/HeroCache";
 
 /**
- * mai Component responsible with retrieving the
+ * main Component responsible with retrieving the
  * 'live and upcoming matches'. Most of the functionality is
  * based on the result of this.
+ * The workaround:
+ * SelectedMatch and Upcoming are 2 different Components and cannot communicate between them directly.
+ * The only thing they share is this Component (Home). The SelectedMatch Component needs info about upcoming
+ * matches from the Upcoming Component. This info is used as the state (in the SelectedMatch Component),
+ * since the SelectedMatch Component only displays one match at a time.
+ * The Upcoming Component is passed a function that updates the state of the SelectedMatch Component.
+ * That function is used as a state value in this Component so it will trigger a re-render when the SelectedMatch
+ * component has been rendered and the function has been initialised.
  */
 class Home extends Component {
 
