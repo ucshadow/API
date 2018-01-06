@@ -73,6 +73,7 @@ export default class ShowSelectedMatch extends Component {
             data={this.props.data}
             t={0}
             opponent={this.props.opponent}
+            dimensions={this.props.dimensions}
           />
           <DetailsSingleTeam
             picks={team2Picks}
@@ -80,6 +81,7 @@ export default class ShowSelectedMatch extends Component {
             data={this.props.data}
             t={1}
             opponent={this.props.opponent}
+            dimensions={this.props.dimensions}
           />
         </div>
       )

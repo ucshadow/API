@@ -33,8 +33,8 @@ export default class DetailsSingleTeamDrawer extends Component {
 
   calculateStyle = () => {
     return {
-      width: 220,
-      height: 100,  // toDo: change this to match screen dimension!
+      width: this.props.dimensions.width / 6,
+      height: this.props.dimensions.height / 6,
       border: '1px solid white',
     }
   };

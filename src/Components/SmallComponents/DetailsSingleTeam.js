@@ -13,7 +13,7 @@ export default class DetailsSingleTeam extends Component {
   constructor(props) {
     super(props);
     this.u = path;
-    this.state = {picks: this.props.picks, playerInfo: []}
+    this.state = {picks: this.props.picks, playerInfo: []};
   }
 
   componentDidMount() {
@@ -61,6 +61,7 @@ export default class DetailsSingleTeam extends Component {
         picks={this.props.picks}
         opponent={this.props.opponent}
         data={this.props.data}
+        dimensions={this.props.dimensions}
       />
     }
   };
