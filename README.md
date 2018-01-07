@@ -15,6 +15,11 @@ Programming languages:
 
 Hosted on [Heroku](https://d2-api.herokuapp.com/) free tier.
 
+Since Heroku free tier puts the process to sleep if idle, please allow up to 90 seconds for
+the server to boot and download necessary data. I've tried to negate the impact on OpenDota API 
+by downloading all the necessary data on server boot-up (there are around 200 queries and 3 a second
+is the recommended amount by OpenDota guidelines).
+
 **Description:**
 
 The purpose of this App is to predict the chances for a team to win over the other 
@@ -40,7 +45,7 @@ Right team
 
 * Team head-to-head past encounters (last 10 if 10):
 
-    - Team logo
+    - Winning team logo
     - Tournament name
  
 ![alt text](https://i.imgur.com/6R3SQzL.png "Team past encounters")
@@ -77,5 +82,5 @@ Based on 5 criteria
  
  Dimensions and positioning is calculated bases on the screen resolution.
  
- Developed on 4k resolution, but 1k should look basically the same.
+ Developed on 4k resolution, but 1k _should_ look basically the same.
 
