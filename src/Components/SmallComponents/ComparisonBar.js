@@ -6,9 +6,23 @@ import React, {Component} from 'react';
  */
 export default class ComparisonBar extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
+    this.fixInfinity();
   }
+
+  componentWillReceiveProps(p) {
+    console.log(p);
+    return this.fixInfinity();
+  }
+
+  fixInfinity = () => {
+    for(let i = 0; i < 2; i++) {
+      if(this.props.data[i] === Infinity) {
+        this.props.data[i] = 40
+      }
+    }
+  };
 
   calculateStyle = () => {
     return {

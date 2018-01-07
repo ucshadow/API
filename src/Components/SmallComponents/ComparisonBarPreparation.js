@@ -8,6 +8,7 @@ export default class ComparisonBarPreparation extends Component {
 
   constructor() {
     super();
+    // this.res = undefined;
   }
 
   static defaultProps = {
@@ -16,6 +17,8 @@ export default class ComparisonBarPreparation extends Component {
   };
 
   draw = (arr) => {
+    // console.log('drawing');
+    // console.log(arr);
     return arr.map((e, i) => {
       return <ComparisonBar key={Math.random()} data={e} index={i} dimensions={this.props.dimensions}/>
     })
@@ -30,7 +33,7 @@ export default class ComparisonBarPreparation extends Component {
       })
     });
     local.slice(0, 5).map((e, i) => {
-      arr.push([local[i][1], local[i + 6][1], Object.keys(this.props.data.left)[i]])
+      return arr.push([local[i][1], local[i + 6][1], Object.keys(this.props.data.left)[i]])
     });
 
     // arr[5] = [Math.round(Math.random() * 100), Math.round(Math.random() * 100), 'luck'];
@@ -70,7 +73,7 @@ export default class ComparisonBarPreparation extends Component {
 
 
     arr.map((e) => {
-      this.calculateChances(e, leftChances, rightChances)
+      return this.calculateChances(e, leftChances, rightChances)
     });
 
     let l = parseFloat(leftChances.reduce((a, b) => {return a + b}, 0)).toFixed(2);
@@ -96,13 +99,35 @@ export default class ComparisonBarPreparation extends Component {
     //top 3 heroes win rate: 20
     //team rating: 20
 
+    // console.log('chances for');
+    // console.log(e);
+    // console.log(l);
+    // console.log(r);
+
     let left = e[0];
     let right = e[1];
-    let desc = e[2];
+
+    // yes this happened
+    if(left === Infinity) {
+      left = 10
+    }
+
+    if(right === Infinity) {
+      right = 10
+    }
+
     let dif = Math.abs(left - right);
+    if(dif < 1) {
+      dif = 1
+    }
+
+    let desc = e[2];
 
     while(dif > 100) {  // contract variables
-      dif /= 10
+      dif = dif / 10;
+      if(dif < 10) {
+        break
+      }
     }
 
     let score = 0;
@@ -115,25 +140,32 @@ export default class ComparisonBarPreparation extends Component {
 
     if (desc === 'leaderBoard') { // smaller is better
       if(left < right) { // ++ left
-        l.push(score)
+        l.push(Math.round(score))
       } else {
-        r.push(score)
+        r.push(Math.round(score))
       }
     } else { // bigger is better
       if(left > right) { // ++ left
-        l.push(score)
+        l.push(Math.round(score))
       } else {
-        r.push(score)
+        r.push(Math.round(score))
       }
     }
   };
+
+  // prep = () => {
+  //   if(this.res === undefined) {
+  //     this.res = this.prepareData();
+  //   }
+  //   return this.res;
+  // };
 
   render() {
     return (
       <div style={this.calculateStyle()}>
         {this.drawLine()}
         {this.draw(this.prepareData())}
-        {this.showChances(this.prepareData())} {/* toDo: change this, it's called 2 times */}
+        {this.showChances(this.prepareData())}
       </div>
     )
   }
