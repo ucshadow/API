@@ -84,3 +84,5 @@ Based on 5 criteria
  
  Developed on 4k resolution, but 1k _should_ look basically the same.
 
+ Details about the implementation process can be found in the code comments.
+ Un-commented code should be self-explanatory.
